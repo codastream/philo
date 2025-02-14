@@ -6,23 +6,28 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:21:33 by fpetit            #+#    #+#             */
-/*   Updated: 2025/01/24 14:20:52 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/01/26 18:50:56 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	free_philo(t_phi **philos)
+void	free_philo(t_phi *philo)
 {
-	int	i;
+	t_phi	*tmp;
 
-	i = 0;
-	while (philos[i])
+	while (philo)
 	{
-		free(philos[i]);
-		i++;
+		tmp = philo->next;
+		// pthread_mutex_destroy(&philo->left_fork->has_fork_m);
+		// pthread_mutex_destroy(&philo->right_fork->has_fork_m);
+		// pthread_mutex_destroy(&philo->nb_meals->nb_meals_m);
+		free(philo->nb_meals);
+		free(philo->left_fork);
+		free(philo->right_fork);
+		free(philo);
+		philo = tmp;
 	}
-	free(philos);
 }
 
 void	clean(t_data *data)
