@@ -6,34 +6,47 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:21:33 by fpetit            #+#    #+#             */
-/*   Updated: 2025/01/26 18:50:56 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/05 17:40:16 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	free_philo(t_phi *philo)
+void	free_philo(t_data *data)
 {
-	t_phi	*tmp;
+	t_phi	*philo;
+	int		i;
 
-	while (philo)
+	i = 0;
+	while (i < data->nb_philo)
 	{
-		tmp = philo->next;
-		// pthread_mutex_destroy(&philo->left_fork->has_fork_m);
-		// pthread_mutex_destroy(&philo->right_fork->has_fork_m);
-		// pthread_mutex_destroy(&philo->nb_meals->nb_meals_m);
+		philo = data->philosophers[i];
 		free(philo->nb_meals);
-		free(philo->left_fork);
-		free(philo->right_fork);
 		free(philo);
-		philo = tmp;
+		i++;
 	}
+	free(data->philosophers);
+}
+
+void	free_forks(t_data *data)
+{
+	int		i;
+
+	i = 0;
+	while (i < data->nb_philo)
+	{
+		free(data->forks[i]);
+		i++;
+	}
+	free(data->forks);
 }
 
 void	clean(t_data *data)
 {
 	if (data->philosophers)
-		free_philo(data->philosophers);
+		free_philo(data);
+	if (data->forks)
+		free_forks(data);
 	free(data);
 }
 

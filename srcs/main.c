@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:38 by fpetit            #+#    #+#             */
-/*   Updated: 2025/01/24 14:28:41 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/05 16:44:59 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	main(int ac, char **av)
 		if (!data)
 			return (EXIT_FAILURE);
 		parse_args(data, ac, av);
+		save_start(data);
 		clean(data);
 		exit(EXIT_SUCCESS);
 	}
