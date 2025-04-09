@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:49:03 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/05 17:40:54 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/09 20:49:31 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,12 @@ t_fork	*init_fork(t_data *data)
 
 	fork = malloc(1 * sizeof(t_fork));
 	check_malloc(data, fork);
-	fork->is_taken = pthread_mutex_init(&fork->fork_m, NULL);
+	if (pthread_mutex_init(&fork->fork_m, NULL) != 0)
+	{
+		free(fork);
+		return (NULL);
+	}
+	fork->is_taken = true;
 	return (fork);
 }
 
@@ -38,8 +43,28 @@ t_nb_meals *init_nb_meals(t_data *data)
 
 	nb_meals = malloc(1 * sizeof(t_nb_meals));
 	check_malloc(data, nb_meals);
-	nb_meals->count = pthread_mutex_init(&nb_meals->nb_meals_m, NULL);
+	if (pthread_mutex_init(&nb_meals->nb_meals_m, NULL) != 0)
+	{
+		free(nb_meals);
+		return (NULL);
+	}
+	nb_meals->count = 0;
 	return (nb_meals);
+}
+
+t_print	*init_print(t_data *data)
+{
+	t_print	*print;
+
+	print = malloc(1 *sizeof(t_print));
+	check_malloc(data, print);
+	if (pthread_mutex_init(&print->print_m, NULL) != 0)
+	{
+		free(print);
+		return (NULL);
+	}
+	print->can_print = true;
+	return (print);
 }
 
 t_phi *new_philo(t_data *data)
@@ -58,8 +83,11 @@ t_phi *new_philo(t_data *data)
 	philo->right_fork = NULL;
 	// philo->nb_forks = init_nb_forks(data);
 	philo->nb_meals = init_nb_meals(data);
+	philo->print = init_print(data);
 	philo->nb_philo = data->nb_philo;
 	philo->forks = data->forks;
+	philo->start = malloc(sizeof(t_time));
+	philo->print_time = malloc(sizeof(t_time));
 	return (philo);
 }
 

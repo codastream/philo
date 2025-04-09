@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/05 17:35:47 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/09 20:41:43 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,12 @@ typedef struct s_nb_meals
 	t_mutex	nb_meals_m;
 }	t_nb_meals;
 
+typedef struct s_print
+{
+	bool	can_print;
+	t_mutex	print_m;
+}	t_print;
+
 typedef struct timeval t_time;
 
 typedef struct s_phi
@@ -69,7 +75,7 @@ typedef struct s_phi
 	t_nb_meals		*nb_meals;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
-	t_mutex			*print_m;
+	t_print			*print;
 	t_fork			**forks;
 	// t_nb_forks		*nb_forks;
 }	t_phi;
@@ -115,5 +121,9 @@ void	ft_free_2d_char_null_ended(char **tab);
 
 // routines
 void	save_start(t_data *data);
+void	live_love_pray(t_data *data);
+
+// debug
+void	print_philo(t_phi *phi);
 
 #endif

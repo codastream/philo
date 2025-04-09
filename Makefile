@@ -75,6 +75,7 @@ SRCS_FILES:=	main.c\
 				utils/mem.c\
 				utils/print.c\
 				utils/strings.c\
+				debug.c\
 
 SRCS_FILES_BONUS:= $(patsubst %.c, %_bonus.c, $(SRCS_FILES))\
 
