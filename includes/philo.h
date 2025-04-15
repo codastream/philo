@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/15 12:57:27 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/15 13:17:38 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ typedef struct s_phi
 	t_nb_meals		*nb_meals;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
-	t_print			*print;
 	t_fork			**forks;
+	t_print			*print;
 	// t_nb_forks		*nb_forks;
 }	t_phi;
 
@@ -91,6 +91,7 @@ typedef struct s_data
 	int			nb_philo;
 	int			min_nb_meals;
 	pthread_t	*threads;
+	t_print		*print;
 	t_time		*start;
 	t_phi		**philosophers;
 	t_fork		**forks;
