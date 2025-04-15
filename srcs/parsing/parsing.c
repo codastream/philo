@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:49:03 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/14 19:23:45 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/15 13:05:30 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ t_phi *new_philo(t_data *data)
 	philo->print = init_print(data);
 	philo->nb_philo = data->nb_philo;
 	philo->forks = data->forks;
-	philo->start = malloc(sizeof(t_time));
 	philo->print_time = malloc(sizeof(t_time));
 	philo->debug = data->debug;
 	return (philo);
