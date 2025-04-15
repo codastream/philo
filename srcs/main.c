@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:38 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/09 18:25:33 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/14 19:02:48 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@ int	main(int ac, char **av)
 		data = malloc(1 * sizeof(t_data));
 		if (!data)
 			return (EXIT_FAILURE);
-		parse_args(data, ac, av);
+		if (!parse_args(data, ac, av))
+		{
+			ft_puterr("usage: philo <number_of_philosophers>\n<time_to_die>\n<time_to_eat>\n<time_to_sleep>\n[number_of_times_each_philosopher_must_eat]\n");
+			return (EXIT_FAILURE);
+		}
 		save_start(data);
 		live_love_pray(data);
 		clean(data);

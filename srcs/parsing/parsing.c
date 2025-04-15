@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:49:03 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/09 20:49:31 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/14 19:23:45 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 // 	return (fork);
 // }
 
-t_fork	*init_fork(t_data *data)
+t_fork	*init_fork(t_data *data, int i)
 {
 	t_fork	*fork;
 
@@ -33,7 +33,8 @@ t_fork	*init_fork(t_data *data)
 		free(fork);
 		return (NULL);
 	}
-	fork->is_taken = true;
+	fork->is_taken = false;
+	fork->index = i;
 	return (fork);
 }
 
@@ -88,6 +89,7 @@ t_phi *new_philo(t_data *data)
 	philo->forks = data->forks;
 	philo->start = malloc(sizeof(t_time));
 	philo->print_time = malloc(sizeof(t_time));
+	philo->debug = data->debug;
 	return (philo);
 }
 
@@ -119,27 +121,34 @@ void	create_forks(t_data *data)
 	i = 0;
 	while (i < data->nb_philo)
 	{
-		fork = init_fork(data);
+		fork = init_fork(data, i);
 		data->forks[i] = fork;
 		i++;
 	}
 }
 
-void	parse_args(t_data *data, int ac, char **av)
+bool	parse_args(t_data *data, int ac, char **av)
 {
+	if (ac < 4 || ac > 6)
+		return (false);
 	data->start = malloc(1 * sizeof(t_time));
 	if (!data->start)
-		return ;
+		return (false);
 	data->nb_philo = ft_atoi(av[0]);
 	data->time_to_die = ft_atoi(av[1]);
 	data->time_to_eat = ft_atoi(av[2]);
 	data->time_to_sleep = ft_atoi(av[3]);
-	if (ac == 5)
-	{
+	if (ac >= 5)
 		data->min_nb_meals = ft_atoi(av[4]);
-	}
 	else
 		data->min_nb_meals = UNSET;
+	data->debug = false;
+	if (ac == 6)
+		data->debug = true;
+	data->threads = malloc(data->nb_philo * sizeof(pthread_t));
+	if (!data->threads)
+		return (false);
 	create_forks(data);
 	create_philosophers(data);
+	return (true);
 }

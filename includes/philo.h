@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/09 20:41:43 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/15 12:57:27 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_fork
 {
 	bool	is_taken;
 	t_mutex	fork_m;
+	int		index;
 }	t_fork;
 typedef struct s_nb_meals
 {
@@ -70,6 +71,7 @@ typedef struct s_phi
 	int				min_nb_meals; // same in data
 	int				last_meal;
 	int				nb_philo;
+	bool			debug;
 	t_time			*start;
 	t_time			*print_time;
 	t_nb_meals		*nb_meals;
@@ -83,14 +85,16 @@ typedef struct s_phi
 
 typedef struct s_data
 {
-	int		time_to_die;
-	int		time_to_eat;
-	int		time_to_sleep;
-	int		nb_philo;
-	int		min_nb_meals;
-	t_time	*start;
-	t_phi	**philosophers;
-	t_fork	**forks;
+	int			time_to_die;
+	int			time_to_eat;
+	int			time_to_sleep;
+	int			nb_philo;
+	int			min_nb_meals;
+	pthread_t	*threads;
+	t_time		*start;
+	t_phi		**philosophers;
+	t_fork		**forks;
+	bool		debug;
 }	t_data;
 
 // checking
@@ -98,7 +102,7 @@ bool	check_args(int	ac, char **av);
 
 // parsing
 void	add_philosopher(t_data *data, int index);
-void	parse_args(t_data *data, int ac, char **av);
+bool	parse_args(t_data *data, int ac, char **av);
 
 // errors
 void	check_malloc(t_data *data, void *allocated);
@@ -115,6 +119,8 @@ int		ft_atoi(const char *nb);
 
 // util print
 void	ft_puterr(char *s);
+int		get_elapsed_time_ms(t_time *start, t_time *to);
+char	*get_color(int i);
 
 // util mem
 void	ft_free_2d_char_null_ended(char **tab);
