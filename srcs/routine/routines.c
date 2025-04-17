@@ -18,7 +18,7 @@ bool	check_all_alive(t_phi *phi)
 
 	pthread_mutex_lock(&phi->check->check_m);
 	all_alive = phi->check->all_alive;
-	printf("%sall are alive ? %d %s\n", P_GREEN, all_alive, P_NOC);
+	// printf("%sall are alive ? %d %s\n", P_GREEN, all_alive, P_NOC);
 	pthread_mutex_unlock(&phi->check->check_m);
 	return (all_alive);
 }
@@ -50,14 +50,11 @@ bool	print_activity(t_phi *phi, char *msg)
 	int		code;
 	bool	can_print;
 
-	pthread_mutex_lock(&phi->check->check_m);
+	// can_print = check_all_alive(phi);
+	// if (!can_print)
+	// 	return (false);
 	can_print = check_all_alive(phi);
-	pthread_mutex_unlock(&phi->check->check_m);
-	if (!can_print)
-		return (false);
-	pthread_mutex_lock(&phi->check->check_m);
-	can_print = check_all_alive(phi);
-	if (can_print)
+	if (can_print || !ft_strcmp(msg, MSG_DIED))
 	{
 		pthread_mutex_lock(&phi->print->print_m);
 		code = gettimeofday(phi->now, NULL);
@@ -76,7 +73,6 @@ bool	print_activity(t_phi *phi, char *msg)
 		printf("%s%6d%s %d %s%s", P_PINK, ms, get_color(phi->index), phi->index, P_NOC, msg);
 		pthread_mutex_unlock(&phi->print->print_m);
 	}
-	pthread_mutex_unlock(&phi->check->check_m);
 	return (true);
 }
 
@@ -221,13 +217,13 @@ void	*monitor(void *dat)
 		phi = data->philosophers[i];
 		save_time(phi->now);
 		elapsed = get_elapsed_meal_ms(phi->last_meal, phi->now);
-		printf("elapsed since last meal = %d\n", elapsed);
+		// printf("elapsed since last meal = %d\n", elapsed);
 		if (elapsed > phi->time_to_die)
 		{
 			pthread_mutex_lock(&data->check->check_m);
 			data->check->all_alive = false;
 			pthread_mutex_unlock(&data->check->check_m);
-			print_activity(phi, "has died\t\t💀\n");
+			print_activity(phi, MSG_DIED);
 		}
 		if (i < data->nb_philo - 1)
 			i++;
@@ -263,6 +259,7 @@ void	live_love_pray(t_data *data)
 		i++;
 	}
 	pthread_create(&thread, NULL, monitor, data);
+	data->monitor = thread;
 	i = 0;
 	while (i < data->nb_philo)
 	{

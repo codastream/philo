@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:49:03 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/16 17:48:56 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/17 18:25:14 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_print	*init_print(t_data *data)
 {
 	t_print	*print;
 
-	print = malloc(1 *sizeof(t_print));
+	print = malloc(1 * sizeof(t_print));
 	check_malloc(data, print);
 	if (pthread_mutex_init(&print->print_m, NULL) != 0)
 	{

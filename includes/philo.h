@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/17 17:48:55 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/17 18:42:29 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@
 # include "colors.h"
 
 # define UNSET -1
+# define MSG_THINK "is thinking\t\t🧠\n"
+# define MSG_FORK "has taken a fork\t🍴\n"
+# define MSG_EAT "is eating\t\t🍝\n"
+# define MSG_SLEEP "is sleeping\t\t💤\n"
+# define MSG_DIED "has died\t\t💀\n"
 
 typedef pthread_mutex_t	t_mutex;
 
@@ -122,6 +127,7 @@ void	clean(t_data *data);
 // util strings
 int		ft_strlen(char *s);
 bool	is_digit(char c);
+int		ft_strcmp(char *s1, char *s2);
 
 // util conversion
 long	ft_atol(const char *nb);

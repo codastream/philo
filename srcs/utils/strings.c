@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:31:23 by fpetit            #+#    #+#             */
-/*   Updated: 2025/01/24 14:15:18 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/17 18:44:19 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,20 @@ int	ft_strlen(char *s)
 		size++;
 	}
 	return (size);
+}
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	if (!s1 && !s2)
+		return (0);
+	if (!s2)
+		return (s1[i]);
+	if (!s1)
+		return (!s2[i]);
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
 }
