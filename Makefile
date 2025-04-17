@@ -71,7 +71,7 @@ BUILD_DIR		:=	.build
 SRCS_FILES:=	main.c\
 				parsing/checking.c\
 				parsing/parsing.c\
-				philo/routines.c\
+				routine/routines.c\
 				utils/conv.c\
 				utils/errors.c\
 				utils/mem.c\
