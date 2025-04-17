@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:49:03 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/15 13:18:16 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/16 17:48:56 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,21 @@ t_print	*init_print(t_data *data)
 	return (print);
 }
 
+t_check	*init_check(t_data *data)
+{
+	t_check	*check;
+
+	check = malloc(1 * sizeof(t_check));
+	check_malloc(data, check);
+	if (pthread_mutex_init(&check->check_m, NULL) != 0)
+	{
+		free(check);
+		return (NULL);
+	}
+	check->all_alive = true;
+	return (check);
+}
+
 t_phi *new_philo(t_data *data)
 {
 	t_phi	*philo;
@@ -80,14 +95,16 @@ t_phi *new_philo(t_data *data)
 	philo->time_to_die = data->time_to_die;
 	philo->time_to_eat = data->time_to_eat;
 	philo->time_to_sleep = data->time_to_sleep;
+	philo->min_nb_meals = data->min_nb_meals;
 	philo->left_fork = NULL;
 	philo->right_fork = NULL;
 	// philo->nb_forks = init_nb_forks(data);
 	philo->nb_meals = init_nb_meals(data);
 	philo->print = data->print;
+	philo->check = data->check;
 	philo->nb_philo = data->nb_philo;
 	philo->forks = data->forks;
-	philo->print_time = malloc(sizeof(t_time));
+	philo->now = malloc(sizeof(t_time));
 	philo->debug = data->debug;
 	return (philo);
 }
@@ -129,25 +146,26 @@ void	create_forks(t_data *data)
 bool	parse_args(t_data *data, int ac, char **av)
 {
 	if (ac < 4 || ac > 6)
-	return (false);
+		return (false);
 	data->start = malloc(1 * sizeof(t_time));
 	if (!data->start)
-	return (false);
+		return (false);
 	data->nb_philo = ft_atoi(av[0]);
 	data->time_to_die = ft_atoi(av[1]);
 	data->time_to_eat = ft_atoi(av[2]);
 	data->time_to_sleep = ft_atoi(av[3]);
 	if (ac >= 5)
-	data->min_nb_meals = ft_atoi(av[4]);
+		data->min_nb_meals = ft_atoi(av[4]);
 	else
-	data->min_nb_meals = UNSET;
+		data->min_nb_meals = UNSET;
 	data->debug = false;
 	if (ac == 6)
-	data->debug = true;
+		data->debug = true;
 	data->threads = malloc(data->nb_philo * sizeof(pthread_t));
 	if (!data->threads)
-	return (false);
+		return (false);
 	data->print = init_print(data);
+	data->check = init_check(data);
 	create_forks(data);
 	create_philosophers(data);
 	return (true);

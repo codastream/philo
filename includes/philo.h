@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/15 13:17:38 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/16 17:22:44 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,12 @@ typedef struct s_print
 	t_mutex	print_m;
 }	t_print;
 
+typedef struct s_check
+{
+	bool	all_alive;
+	t_mutex	check_m;
+}	t_check;
+
 typedef struct timeval t_time;
 
 typedef struct s_phi
@@ -73,15 +79,15 @@ typedef struct s_phi
 	int				nb_philo;
 	bool			debug;
 	t_time			*start;
-	t_time			*print_time;
+	t_time			*now;
 	t_nb_meals		*nb_meals;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
 	t_fork			**forks;
 	t_print			*print;
+	t_check			*check;
 	// t_nb_forks		*nb_forks;
 }	t_phi;
-
 
 typedef struct s_data
 {
@@ -91,10 +97,13 @@ typedef struct s_data
 	int			nb_philo;
 	int			min_nb_meals;
 	pthread_t	*threads;
+	pthread_t	monitor;
 	t_print		*print;
+	t_check		*check;
 	t_time		*start;
 	t_phi		**philosophers;
 	t_fork		**forks;
+	bool		is_end;
 	bool		debug;
 }	t_data;
 
@@ -127,8 +136,9 @@ char	*get_color(int i);
 void	ft_free_2d_char_null_ended(char **tab);
 
 // routines
-void	save_start(t_data *data);
+void	save_time(t_time *time);
 void	live_love_pray(t_data *data);
+bool	check_time_to_die(t_phi *phi, bool *should_die);
 
 // debug
 void	print_philo(t_phi *phi);

@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:21:33 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/15 13:06:02 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/15 15:10:40 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ void	free_philo(t_data *data)
 	{
 		philo = data->philosophers[i];
 		free(philo->nb_meals);
-		free(philo->print);
-		free(philo->print_time);
+		free(philo->now);
 		free(philo);
 		i++;
 	}
@@ -49,6 +48,7 @@ void	clean(t_data *data)
 		free_philo(data);
 	if (data->forks)
 		free_forks(data);
+	free(data->print);
 	free(data->start);
 	free(data->threads);
 	free(data);

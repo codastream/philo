@@ -10,6 +10,8 @@ ifeq ($(DEBUG), 1)
 	CFLAGS += -g
 endif
 
+#CFLAGS += -fsanitize=thread
+
 MAKEFLAGS	:=	--no-print-directory
 
 #================================COUNT============================#
