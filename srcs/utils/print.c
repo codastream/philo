@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:31:23 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/15 12:56:55 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/17 18:06:44 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@ char *get_color(int i)
 	codes[4] = P_PINK;
 	codes[5] = P_TEAL;
 	return (codes[i % 6]);
+}
+
+int		get_elapsed_meal_ms(int last_meal, t_time *now)
+{
+	int	msec_now;
+
+	msec_now = now->tv_sec * 1000 + now->tv_usec / 1000;
+	return (msec_now - last_meal);
 }
 
 int		get_elapsed_time_ms(t_time *start, t_time *to)

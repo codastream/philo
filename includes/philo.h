@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/16 17:22:44 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/17 17:48:55 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ int		ft_atoi(const char *nb);
 // util print
 void	ft_puterr(char *s);
 int		get_elapsed_time_ms(t_time *start, t_time *to);
+int		get_elapsed_meal_ms(int last_meal, t_time *now);
 char	*get_color(int i);
 
 // util mem
