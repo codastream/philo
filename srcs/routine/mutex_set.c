@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:25:29 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/18 19:34:25 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/18 21:56:40 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,15 @@ void	set_nb_meal_plus(t_nb_meals *meals)
 
 void	update_last_meal(t_phi *phi)
 {
-	int	msec_now;
-
+	pthread_mutex_lock(&phi->last_meal->last_meal_m);
 	save_time(phi->now);
-	msec_now = phi->now->tv_sec * 1000 + phi->now->tv_usec / 1000;
-	phi->last_meal = msec_now;
+	phi->last_meal->last_meal = get_time_ms(phi->now);
+	pthread_mutex_unlock(&phi->last_meal->last_meal_m);
+}
+
+void	set_death(t_alive *alive)
+{
+	pthread_mutex_lock(&alive->alive_m);
+	alive->all_alive = false;
+	pthread_mutex_unlock(&alive->alive_m);
 }

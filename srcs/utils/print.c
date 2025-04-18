@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:31:23 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/18 17:29:45 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/18 23:37:54 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int		get_elapsed_meal_ms(int last_meal, t_time *now)
 {
 	int	msec_now;
 
+	// save_time(now);
 	msec_now = now->tv_sec * 1000 + now->tv_usec / 1000;
 	return (msec_now - last_meal);
 }

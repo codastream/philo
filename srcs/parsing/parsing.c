@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:49:03 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/18 18:55:27 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/18 21:48:14 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,51 +38,6 @@ t_fork	*init_fork(t_data *data, int i)
 	return (fork);
 }
 
-t_nb_meals *init_nb_meals(t_data *data)
-{
-	t_nb_meals *nb_meals;
-
-	nb_meals = malloc(1 * sizeof(t_nb_meals));
-	check_malloc(data, nb_meals);
-	if (pthread_mutex_init(&nb_meals->nb_meals_m, NULL) != 0)
-	{
-		free(nb_meals);
-		return (NULL);
-	}
-	nb_meals->count = 0;
-	return (nb_meals);
-}
-
-t_print	*init_print(t_data *data)
-{
-	t_print	*print;
-
-	print = malloc(1 * sizeof(t_print));
-	check_malloc(data, print);
-	if (pthread_mutex_init(&print->print_m, NULL) != 0)
-	{
-		free(print);
-		return (NULL);
-	}
-	print->can_print = true;
-	return (print);
-}
-
-t_ongoing	*init_ongoing(t_data *data)
-{
-	t_ongoing	*ongoing;
-
-	ongoing = malloc(1 * sizeof(t_ongoing));
-	check_malloc(data, ongoing);
-	if (pthread_mutex_init(&ongoing->ongoing_m, NULL) != 0)
-	{
-		free(ongoing);
-		return (NULL);
-	}
-	ongoing->is_ongoing = true;
-	return (ongoing);
-}
-
 t_phi *new_philo(t_data *data)
 {
 	t_phi	*philo;
@@ -91,7 +46,7 @@ t_phi *new_philo(t_data *data)
 	if (!philo)
 		check_malloc(data, philo);
 	philo->thread_id = 0;
-	philo->last_meal = 0;
+	// philo->last_meal = 0;
 	philo->time_to_die = data->time_to_die;
 	philo->time_to_eat = data->time_to_eat;
 	philo->time_to_sleep = data->time_to_sleep;
@@ -104,6 +59,7 @@ t_phi *new_philo(t_data *data)
 	philo->ongoing = data->ongoing;
 	philo->nb_philo = data->nb_philo;
 	philo->forks = data->forks;
+	philo->alive = data->alive;
 	philo->now = malloc(sizeof(t_time));
 	philo->debug = data->debug;
 	return (philo);
@@ -166,6 +122,7 @@ bool	parse_args(t_data *data, int ac, char **av)
 		return (false);
 	data->print = init_print(data);
 	data->ongoing = init_ongoing(data);
+	data->alive = init_alive(data);
 	create_forks(data);
 	create_philosophers(data);
 	return (true);

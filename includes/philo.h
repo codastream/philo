@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/18 20:00:25 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/18 23:33:46 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@
 # include "colors.h"
 
 # define UNSET -1
-# define MSG_THINK "is thinking\t\t🧠\n"
-# define MSG_FORK "has taken a fork\t🍴\n"
-# define MSG_EAT "is eating\t\t🍝\n"
-# define MSG_SLEEP "is sleeping\t\t💤\n"
-# define MSG_DIED "has died\t\t💀\n"
+# define MSG_THINK "is thinking\n"
+# define MSG_FORK "has taken a fork\n"
+# define MSG_EAT "is eating\n"
+# define MSG_SLEEP "is sleeping\n"
+# define MSG_DIED "died\n"
 
 typedef pthread_mutex_t	t_mutex;
 
@@ -64,11 +64,11 @@ typedef struct s_print
 	t_mutex	print_m;
 }	t_print;
 
-// typedef struct s_alive
-// {
-// 	bool	all_alive;
-// 	t_mutex	alive_m;
-// }	t_alive;
+typedef struct s_last_meal
+{
+	int		last_meal;
+	t_mutex	last_meal_m;
+}	t_last_meal;
 
 typedef struct s_ongoing
 {
@@ -92,7 +92,7 @@ typedef struct s_phi
 	int				time_to_eat; // same in data
 	int				time_to_sleep; // same in data
 	int				min_nb_meals; // same in data
-	int				last_meal;
+	// int				last_meal;
 	int				nb_philo;
 	bool			debug;
 	t_time			*start;
@@ -103,7 +103,8 @@ typedef struct s_phi
 	t_fork			**forks;
 	t_print			*print;
 	t_ongoing		*ongoing;
-	// t_nb_forks		*nb_forks;
+	t_alive			*alive;
+	t_last_meal		*last_meal;
 }	t_phi;
 
 typedef struct s_data
@@ -117,6 +118,7 @@ typedef struct s_data
 	pthread_t	monitor;
 	t_print		*print;
 	t_ongoing	*ongoing;
+	t_alive		*alive;
 	t_time		*start;
 	t_phi		**philosophers;
 	t_fork		**forks;
@@ -131,16 +133,26 @@ bool	check_args(int	ac, char **av);
 void	add_philosopher(t_data *data, int index);
 bool	parse_args(t_data *data, int ac, char **av);
 
+// init
+t_nb_meals	*init_nb_meals(t_data *data);
+t_print		*init_print(t_data *data);
+t_alive		*init_alive(t_data *data);
+t_ongoing	*init_ongoing(t_data *data);
+t_last_meal	*init_last_meal(t_phi *phi);
+
 // mutex set
 void	set_fork_status(t_fork *fork, bool is_taken);
 void	set_is_ongoing(t_ongoing *ongoing, bool is_ongoing);
 void	set_nb_meal_plus(t_nb_meals *meals);
 void	update_last_meal(t_phi *phi);
+void	set_death(t_alive *alive);
 
 // mutex get
 bool	get_fork_availability(t_fork *fork);
 int		get_nb_meal(t_phi *phi);
 bool	get_ongoing(t_phi *phi);
+bool	get_all_alive(t_alive *alive);
+int		get_last_meal(t_phi *phi);
 
 // errors
 void	check_malloc(t_data *data, void *allocated);
@@ -155,18 +167,22 @@ int		ft_strcmp(char *s1, char *s2);
 // util conversion
 long	ft_atol(const char *nb);
 int		ft_atoi(const char *nb);
+char	*ft_itoa(int n);
 
 // util print
 void	ft_puterr(char *s);
 
 // util mem
 void	ft_free_2d_char_null_ended(char **tab);
+char	*ft_strcpy(char *dest, const char *src, size_t n);
 
 // util time
 void	save_time(t_time *time);
 int		get_elapsed_time_ms(t_time *start, t_time *to);
 int		get_elapsed_meal_ms(int last_meal, t_time *now);
 char	*get_color(int i);
+int		get_time_ms(t_time *time);
+void	move_time(t_time *time, int ms);
 
 // routines
 void	save_time(t_time *time);

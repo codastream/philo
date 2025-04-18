@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:20:19 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/18 20:16:52 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/18 23:24:50 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,14 @@ bool	have_all_eaten_enough(t_data *data)
 bool	is_alive(t_phi *phi)
 {
 	int	elapsed;
+	int	last_meal;
 
-	save_time(phi->now);
-	elapsed = get_elapsed_meal_ms(phi->last_meal, phi->now);
+	last_meal = get_last_meal(phi);
+	elapsed = get_elapsed_meal_ms(last_meal, phi->now);
 	if (elapsed > phi->time_to_die)
 	{
+		set_death(phi->alive);
+		usleep(10);
 		print_activity(phi, MSG_DIED);
 		return (false);
 	}
@@ -74,7 +77,6 @@ bool	check_ongoing(t_data *data)
 		is_ongoing = all_alive;
 	else
 		is_ongoing = all_alive && !have_all_eaten_enough(data);
-	set_is_ongoing(data->ongoing, is_ongoing);
 	return (is_ongoing);
 }
 
@@ -95,15 +97,17 @@ void	*monitor(void *dat)
 		phi = data->philosophers[i];
 		save_time(phi->now);
 		is_ongoing = check_ongoing(data);
+		set_is_ongoing(data->ongoing, is_ongoing);
 		// if (elapsed > data->time_to_die)
 		// 	print_activity(phi, MSG_DIED);
 		if (i < data->nb_philo - 1)
 			i++;
 		else
 			i = 0;
-		if (phi->debug)
-			printf("%songoing ? - %d%s\n", P_BLUE, is_ongoing, P_NOC);
+		// if (phi->debug)
+		// printf("%songoing ? - %d%s\n", P_BLUE, is_ongoing, P_NOC);
 		usleep(60);
 	}
+	// printf("end of monitor\n");
 	return (NULL);
 }

@@ -12,30 +12,63 @@
 
 #include "philo.h"
 
+char	*init_buffer(int ms, int index, char *msg)
+{
+	int		size;
+	char	*mschar;
+	char	*indexchar;
+	char	*buffer;
+	char	*dest;
+
+	mschar = ft_itoa(ms);
+	indexchar = ft_itoa(index);
+
+	size = ft_strlen(P_PINK) + ft_strlen(mschar) + 1 \
+		+ ft_strlen(get_color(index)) + ft_strlen(indexchar) \
+		+ ft_strlen(P_NOC) + 1 + ft_strlen(msg) + 1;
+	buffer = malloc(size * sizeof(char));
+	if (!buffer)
+		return (NULL);
+	dest = buffer;
+	dest = ft_strcpy(dest, P_PINK, ft_strlen(P_PINK));
+	dest = ft_strcpy(dest, mschar, ft_strlen(mschar));
+	dest = ft_strcpy(dest, " ", 1);
+	dest = ft_strcpy(dest, get_color(index), ft_strlen(get_color(index)));
+	dest = ft_strcpy(dest, indexchar, ft_strlen(indexchar));
+	dest = ft_strcpy(dest, " ", 1);
+	dest = ft_strcpy(dest, msg, ft_strlen(msg));
+	*dest = '\0';
+	dest -= size;
+	return (buffer);
+}
+
 bool	print_activity(t_phi *phi, char *msg)
 {
 	int		ms;
 	int		code;
 	bool	is_ongoing;
+	char	*buffer;
 
 	is_ongoing = get_ongoing(phi);
 	if (is_ongoing || !ft_strcmp(msg, MSG_DIED))
 	{
-		pthread_mutex_lock(&phi->print->print_m);
-		code = gettimeofday(phi->now, NULL);
-		if (code != 0)
-		{
-			pthread_mutex_unlock(&phi->print->print_m);
-			return (false);
-		}
+		// pthread_mutex_lock(&phi->print->print_m);
+		// code = gettimeofday(phi->now, NULL);
+		// if (code != 0)
+		// {
+		// 	pthread_mutex_unlock(&phi->print->print_m);
+		// 	return (false);
+		// }
 		if (phi->debug)
 		{
 			printf("code is %d - time is %ld s %ld usec\n", code, phi->now->tv_sec, phi->now->tv_usec);
 			printf("start time is %ld \n", phi->start->tv_usec);
 		}
 		ms = get_elapsed_time_ms(phi->start, phi->now);
-		printf("%s%6d%s %d %s%s", P_PINK, ms, get_color(phi->index), phi->index, P_NOC, msg);
-		pthread_mutex_unlock(&phi->print->print_m);
+		buffer = init_buffer(ms, phi->index, msg);
+		write(1, buffer, ft_strlen(buffer));
+		// printf("%s%d%s %d %s%s", P_PINK, ms, get_color(phi->index), phi->index, P_NOC, msg);
+		// pthread_mutex_unlock(&phi->print->print_m);
 	}
 	return (true);
 }
@@ -54,8 +87,6 @@ void	*routine(void *philo)
 	i_right = phi->index + 1;
 	if (phi->nb_philo == phi->index + 1)
 		i_right = 0;
-	if (phi->debug)
-		printf("i left is %d right is %d\n", i_left, i_right);
 	is_ongoing = true;
 	while (is_ongoing)
 	{
@@ -87,7 +118,7 @@ void	live_love_pray(t_data *data)
 	{
 		philo = data->philosophers[i];
 		philo->start = data->start;
-		update_last_meal(philo);
+		philo->last_meal = init_last_meal(philo);
 		pthread_create(&thread, NULL, routine, philo);
 		data->threads[i] = thread;
 		i++;

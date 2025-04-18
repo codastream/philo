@@ -10,7 +10,9 @@ ifeq ($(DEBUG), 1)
 	CFLAGS += -g
 endif
 
-#CFLAGS += -fsanitize=thread
+ifeq ($(SAN), 1)
+	CFLAGS += -fsanitize=thread
+endif
 
 MAKEFLAGS	:=	--no-print-directory
 
@@ -71,6 +73,7 @@ BUILD_DIR		:=	.build
 SRCS_FILES:=	main.c\
 				parsing/checking.c\
 				parsing/parsing.c\
+				parsing/init.c\
 				routine/routines.c\
 				routine/activity.c\
 				routine/monitor.c\
@@ -78,6 +81,7 @@ SRCS_FILES:=	main.c\
 				routine/mutex_set.c\
 				utils/conv.c\
 				utils/errors.c\
+				utils/ft_itoa.c\
 				utils/mem.c\
 				utils/print.c\
 				utils/strings.c\
