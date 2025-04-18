@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/17 18:42:29 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/18 20:00:25 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,23 @@ typedef struct s_print
 	t_mutex	print_m;
 }	t_print;
 
-typedef struct s_check
+// typedef struct s_alive
+// {
+// 	bool	all_alive;
+// 	t_mutex	alive_m;
+// }	t_alive;
+
+typedef struct s_ongoing
+{
+	bool	is_ongoing;
+	t_mutex	ongoing_m;
+}	t_ongoing;
+
+typedef struct s_alive
 {
 	bool	all_alive;
-	t_mutex	check_m;
-}	t_check;
+	t_mutex	alive_m;
+}	t_alive;
 
 typedef struct timeval t_time;
 
@@ -90,7 +102,7 @@ typedef struct s_phi
 	t_fork			*right_fork;
 	t_fork			**forks;
 	t_print			*print;
-	t_check			*check;
+	t_ongoing		*ongoing;
 	// t_nb_forks		*nb_forks;
 }	t_phi;
 
@@ -104,7 +116,7 @@ typedef struct s_data
 	pthread_t	*threads;
 	pthread_t	monitor;
 	t_print		*print;
-	t_check		*check;
+	t_ongoing	*ongoing;
 	t_time		*start;
 	t_phi		**philosophers;
 	t_fork		**forks;
@@ -118,6 +130,17 @@ bool	check_args(int	ac, char **av);
 // parsing
 void	add_philosopher(t_data *data, int index);
 bool	parse_args(t_data *data, int ac, char **av);
+
+// mutex set
+void	set_fork_status(t_fork *fork, bool is_taken);
+void	set_is_ongoing(t_ongoing *ongoing, bool is_ongoing);
+void	set_nb_meal_plus(t_nb_meals *meals);
+void	update_last_meal(t_phi *phi);
+
+// mutex get
+bool	get_fork_availability(t_fork *fork);
+int		get_nb_meal(t_phi *phi);
+bool	get_ongoing(t_phi *phi);
 
 // errors
 void	check_malloc(t_data *data, void *allocated);
@@ -135,17 +158,32 @@ int		ft_atoi(const char *nb);
 
 // util print
 void	ft_puterr(char *s);
-int		get_elapsed_time_ms(t_time *start, t_time *to);
-int		get_elapsed_meal_ms(int last_meal, t_time *now);
-char	*get_color(int i);
 
 // util mem
 void	ft_free_2d_char_null_ended(char **tab);
 
+// util time
+void	save_time(t_time *time);
+int		get_elapsed_time_ms(t_time *start, t_time *to);
+int		get_elapsed_meal_ms(int last_meal, t_time *now);
+char	*get_color(int i);
+
 // routines
 void	save_time(t_time *time);
 void	live_love_pray(t_data *data);
-bool	check_time_to_die(t_phi *phi, bool *should_die);
+bool	get_ongoing(t_phi *phi);
+bool	print_activity(t_phi *phi, char *msg);
+
+// monitor
+void	*monitor(void *dat);
+bool	have_all_eaten_enough(t_data *data);
+
+// activity
+bool	think(t_phi *phi, int i_left);
+bool	take_leftfork(t_phi *phi, int i_left, int i_right);
+bool	take_rightfork(t_phi *phi, int i_right);
+bool	eat(t_phi *phi, int i_left, int i_right);
+bool	gosleep(t_phi *phi);
 
 // debug
 void	print_philo(t_phi *phi);

@@ -72,11 +72,16 @@ SRCS_FILES:=	main.c\
 				parsing/checking.c\
 				parsing/parsing.c\
 				routine/routines.c\
+				routine/activity.c\
+				routine/monitor.c\
+				routine/mutex_get.c\
+				routine/mutex_set.c\
 				utils/conv.c\
 				utils/errors.c\
 				utils/mem.c\
 				utils/print.c\
 				utils/strings.c\
+				utils/time.c\
 				debug.c\
 
 SRCS_FILES_BONUS:= $(patsubst %.c, %_bonus.c, $(SRCS_FILES))\

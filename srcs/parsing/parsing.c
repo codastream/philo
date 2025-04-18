@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:49:03 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/17 18:25:14 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/18 18:55:27 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,19 +68,19 @@ t_print	*init_print(t_data *data)
 	return (print);
 }
 
-t_check	*init_check(t_data *data)
+t_ongoing	*init_ongoing(t_data *data)
 {
-	t_check	*check;
+	t_ongoing	*ongoing;
 
-	check = malloc(1 * sizeof(t_check));
-	check_malloc(data, check);
-	if (pthread_mutex_init(&check->check_m, NULL) != 0)
+	ongoing = malloc(1 * sizeof(t_ongoing));
+	check_malloc(data, ongoing);
+	if (pthread_mutex_init(&ongoing->ongoing_m, NULL) != 0)
 	{
-		free(check);
+		free(ongoing);
 		return (NULL);
 	}
-	check->all_alive = true;
-	return (check);
+	ongoing->is_ongoing = true;
+	return (ongoing);
 }
 
 t_phi *new_philo(t_data *data)
@@ -101,7 +101,7 @@ t_phi *new_philo(t_data *data)
 	// philo->nb_forks = init_nb_forks(data);
 	philo->nb_meals = init_nb_meals(data);
 	philo->print = data->print;
-	philo->check = data->check;
+	philo->ongoing = data->ongoing;
 	philo->nb_philo = data->nb_philo;
 	philo->forks = data->forks;
 	philo->now = malloc(sizeof(t_time));
@@ -165,7 +165,7 @@ bool	parse_args(t_data *data, int ac, char **av)
 	if (!data->threads)
 		return (false);
 	data->print = init_print(data);
-	data->check = init_check(data);
+	data->ongoing = init_ongoing(data);
 	create_forks(data);
 	create_philosophers(data);
 	return (true);
