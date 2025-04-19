@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/18 23:33:46 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/19 11:43:30 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ void	ft_free_2d_char_null_ended(char **tab);
 char	*ft_strcpy(char *dest, const char *src, size_t n);
 
 // util time
-void	save_time(t_time *time);
+int		save_time(t_time *time);
 int		get_elapsed_time_ms(t_time *start, t_time *to);
 int		get_elapsed_meal_ms(int last_meal, t_time *now);
 char	*get_color(int i);
@@ -185,7 +185,6 @@ int		get_time_ms(t_time *time);
 void	move_time(t_time *time, int ms);
 
 // routines
-void	save_time(t_time *time);
 void	live_love_pray(t_data *data);
 bool	get_ongoing(t_phi *phi);
 bool	print_activity(t_phi *phi, char *msg);

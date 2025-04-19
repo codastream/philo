@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:20:19 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/18 23:24:50 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/19 11:57:46 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ bool	is_alive(t_phi *phi)
 	if (elapsed > phi->time_to_die)
 	{
 		set_death(phi->alive);
-		usleep(10);
+		usleep(1);
 		print_activity(phi, MSG_DIED);
 		return (false);
 	}
@@ -106,7 +106,7 @@ void	*monitor(void *dat)
 			i = 0;
 		// if (phi->debug)
 		// printf("%songoing ? - %d%s\n", P_BLUE, is_ongoing, P_NOC);
-		usleep(60);
+		usleep(20);
 	}
 	// printf("end of monitor\n");
 	return (NULL);

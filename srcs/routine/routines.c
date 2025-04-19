@@ -45,11 +45,10 @@ char	*init_buffer(int ms, int index, char *msg)
 bool	print_activity(t_phi *phi, char *msg)
 {
 	int		ms;
-	int		code;
 	bool	is_ongoing;
 	char	*buffer;
 
-	is_ongoing = get_ongoing(phi);
+	is_ongoing = get_all_alive(phi->alive) && get_ongoing(phi);
 	if (is_ongoing || !ft_strcmp(msg, MSG_DIED))
 	{
 		// pthread_mutex_lock(&phi->print->print_m);
@@ -59,14 +58,25 @@ bool	print_activity(t_phi *phi, char *msg)
 		// 	pthread_mutex_unlock(&phi->print->print_m);
 		// 	return (false);
 		// }
+		save_time(phi->now);
 		if (phi->debug)
 		{
-			printf("code is %d - time is %ld s %ld usec\n", code, phi->now->tv_sec, phi->now->tv_usec);
+			printf("time is %ld s %ld usec\n", phi->now->tv_sec, phi->now->tv_usec);
 			printf("start time is %ld \n", phi->start->tv_usec);
 		}
-		ms = get_elapsed_time_ms(phi->start, phi->now);
-		buffer = init_buffer(ms, phi->index, msg);
-		write(1, buffer, ft_strlen(buffer));
+		if (ft_strcmp(msg, MSG_DIED))
+		{
+			ms = get_elapsed_time_ms(phi->start, phi->now);
+			buffer = init_buffer(ms, phi->index, msg);
+			write(1, buffer, ft_strlen(buffer));
+		}
+		else
+		{
+			usleep(3);
+			ms = get_elapsed_time_ms(phi->start, phi->now);
+			buffer = init_buffer(ms, phi->index, msg);
+			write(1, buffer, ft_strlen(buffer));
+		}
 		// printf("%s%d%s %d %s%s", P_PINK, ms, get_color(phi->index), phi->index, P_NOC, msg);
 		// pthread_mutex_unlock(&phi->print->print_m);
 	}
@@ -113,11 +123,12 @@ void	live_love_pray(t_data *data)
 	pthread_t	thread;
 
 	i = 0;
-
+	save_time(data->start);
 	while (i < data->nb_philo)
 	{
 		philo = data->philosophers[i];
 		philo->start = data->start;
+		save_time(philo->now);
 		philo->last_meal = init_last_meal(philo);
 		pthread_create(&thread, NULL, routine, philo);
 		data->threads[i] = thread;
