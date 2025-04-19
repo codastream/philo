@@ -39,3 +39,30 @@ The aims at allowing no more threads than available resource would allow. In oth
 This would be more like a waiter telling the philosopher it forks are available or not.
 
 Another solution presented by Chandy and Mistra also solves the issue with no "arbitrator" but at the cost of enabling communication between threads.
+
+# This implementation
+
+Deadlocks are prevented through a mix of above solutions : dissociated launch of threads based on their indexes and checks on mutexes to prevent concurrent access.
+
+There is no mutex for printing messages. Yet the death notification requires a small wait of 3 usec to ensure it is printed after other concurring activities, while remaining within the requested margin of 10 millisec between actual death and its notification.
+
+## Reducing delays due to function calls
+Some function calls generate delay and may lead to remature death, especially when the _time to live_ comes close to the total activity time.
+After discussing with one fellow student, I tried to implement his idea of bypassing the `printf` function and use `write` to instantaneously display the activity.
+
+# Tests
+
+- Parsing
+- Are there any leaks ?
+- Are there any race conditions ? Are timestamps chronologically consistent ?
+- Base cases
+
+|Min nb of meals	|Lifetime > Other activities|Expected result		|
+| :---------------: | :-----------------------: |:----------------------|
+|no					|yes						|endless loop			|
+|no					|no							|death of a philosopher |
+|yes				|yes						|ends once all have eaten enough|
+|yes				|no							|death of a philosopher	|
+
+- Edge case for single philosopher
+- Stress resistance with many (> 200) philosophers, short (< 60 msec) activity duration, time
