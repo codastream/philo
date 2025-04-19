@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   parsing_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:49:03 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 17:49:46 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/19 19:37:58 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 t_fork	*init_fork(t_data *data, int i)
 {
@@ -102,8 +102,8 @@ bool	parse_args(t_data *data, int ac, char **av)
 	data->debug = false;
 	if (ac == 6)
 		data->debug = true;
-	data->threads = malloc(data->nb_philo * sizeof(pthread_t));
-	if (!data->threads)
+	data->philo_pids = malloc(data->nb_philo * sizeof(int));
+	if (!data->philo_pids)
 		return (false);
 	data->print = init_print(data);
 	data->ongoing = init_ongoing(data);

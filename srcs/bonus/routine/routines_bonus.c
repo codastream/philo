@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 char	*append_time_and_index(char *dest, char *mschar, int index, \
 		char *indexchar)
@@ -60,75 +60,54 @@ bool	print_activity(t_phi *phi, char *msg)
 	bool	is_ongoing;
 	char	*buffer;
 
-	is_ongoing = get_all_alive(phi->alive) && get_ongoing(phi);
-	if (is_ongoing || !ft_strcmp(msg, MSG_DIED))
-	{
-		save_time(phi->now);
-		if (!ft_strcmp(msg, MSG_DIED))
-			usleep(3);
-		ms = get_elapsed_time_ms(phi->start, phi->now);
-		buffer = init_buffer(ms, phi->index + 1, msg);
-		write(1, buffer, ft_strlen(buffer));
-		if (!ft_strcmp(msg, MSG_FORK))
-			write(1, buffer, ft_strlen(buffer));
-		free(buffer);
-	}
 	return (true);
 }
 
-void	*routine(void *philo)
+void	do_activity(void *philo, t_act f)
 {
 	t_phi	*phi;
-	int		i_right;
-	bool	is_ongoing;
 
-	phi = (t_phi *)philo;
-	if (phi->index % 2 != 0)
-		usleep(phi->time_to_eat * 1000);
-	i_right = phi->index + 1;
-	if (phi->nb_philo == phi->index + 1)
-		i_right = 0;
-	is_ongoing = true;
-	while (is_ongoing)
-	{
-		if (!think(phi, phi->index))
-			break ;
-		if (!try_take_forks(phi, phi->index, i_right))
-			break ;
-		if (!eat(phi, phi->index, i_right))
-			break ;
-		if (!gosleep(phi))
-			break ;
-		is_ongoing = get_ongoing(phi);
-	}
+	f(phi);
 	return (NULL);
 }
 
-void	live_love_pray(t_data *data)
+int	live_love_pray(t_data *data)
 {
 	int			i;
 	t_phi		*philo;
 	pthread_t	thread;
+	int			pid;
+	bool		all_alive;
+	int			act_i;
+	t_act		f;
 
 	i = 0;
 	save_time(data->start);
+	data->forks = sem_open("/forks", O_CREAT, 0644, data->nb_philo);
+	if (data->forks == SEM_FAILED)
+		return (EXIT_FAILURE);
 	while (i < data->nb_philo)
 	{
 		philo = data->philosophers[i];
 		philo->start = data->start;
 		save_time(philo->now);
-		philo->last_meal = init_last_meal(philo);
-		pthread_create(&thread, NULL, routine, philo);
-		data->threads[i++] = thread;
+		philo->last_meal = get_time_ms(philo->now);
+		act_i = 0;
+		while (all_alive)
+		{
+			pid = fork();
+			if (pid == -1)
+				return (EXIT_FAILURE);
+			if (pid == 0)
+			{
+
+			}
+			data->philo_pids[i] = pid;
+		}
+		i++;
 	}
 	pthread_create(&thread, NULL, monitor, data);
 	data->monitor = thread;
-	i = 0;
-	while (i < data->nb_philo)
-	{
-		thread = data->threads[i];
-		pthread_join(thread, NULL);
-		i++;
-	}
 	pthread_join(data->monitor, NULL);
+	return (EXIT_SUCCESS);
 }

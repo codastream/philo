@@ -1,18 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug.c                                            :+:      :+:    :+:   */
+/*   mem.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/19 14:15:59 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 14:16:06 by fpetit           ###   ########.fr       */
+/*   Created: 2025/01/15 17:23:24 by fpetit            #+#    #+#             */
+/*   Updated: 2025/04/18 23:16:04 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	print_philo(t_phi *phi)
+void	ft_free_2d_char_null_ended(char **tab)
 {
-	printf("index %d\n", phi->index);
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
+
+char	*ft_strcpy(char *dest, const char *src, size_t n)
+{
+	if (!src && !dest)
+		return (NULL);
+	while (n > 0)
+	{
+		*dest++ = *src++;
+		n--;
+	}
+	return (dest);
 }
