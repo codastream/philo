@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:21:00 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/18 23:36:04 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/19 13:57:16 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,32 +26,50 @@ bool	think(t_phi *phi, int i_left)
 	return (true);
 }
 
-bool	take_leftfork(t_phi *phi, int i_left, int i_right)
+bool	try_take_forks(t_phi *phi, int i_left, int i_right)
 {
 	if (!get_ongoing(phi))
 		return (false);
-	set_fork_status(phi->forks[i_left], true);
-	if (!print_activity(phi, MSG_FORK))
-		return (false);
-	if (phi->nb_philo == 1)
-		return (false);
-	while (!get_fork_availability(phi->forks[i_right]))
+	while (!get_fork_availability(phi->forks[i_left]) && !get_fork_availability(phi->forks[i_right]))
 	{
 		usleep(30);
 		move_time(phi->now, 30);
 	}
-	return (true);
-}
-
-bool	take_rightfork(t_phi *phi, int i_right)
-{
-	if (!get_ongoing(phi))
-		return (false);
+	set_fork_status(phi->forks[i_left], true);
 	set_fork_status(phi->forks[i_right], true);
 	if (!print_activity(phi, MSG_FORK))
 		return (false);
+	if (phi->nb_philo == 1)
+		return (false);
 	return (true);
 }
+
+// bool	take_leftfork(t_phi *phi, int i_left, int i_right)
+// {
+// 	if (!get_ongoing(phi))
+// 		return (false);
+// 	set_fork_status(phi->forks[i_left], true);
+// 	if (!print_activity(phi, MSG_FORK))
+// 		return (false);
+// 	if (phi->nb_philo == 1)
+// 		return (false);
+// 	while (!get_fork_availability(phi->forks[i_right]))
+// 	{
+// 		usleep(30);
+// 		move_time(phi->now, 30);
+// 	}
+// 	return (true);
+// }
+
+// bool	take_rightfork(t_phi *phi, int i_right)
+// {
+// 	if (!get_ongoing(phi))
+// 		return (false);
+// 	set_fork_status(phi->forks[i_right], true);
+// 	if (!print_activity(phi, MSG_FORK))
+// 		return (false);
+// 	return (true);
+// }
 
 bool	eat(t_phi *phi, int i_left, int i_right)
 {

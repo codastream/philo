@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:49:03 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/18 21:48:14 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/19 13:52:05 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,10 @@ t_phi *new_philo(t_data *data)
 	if (!philo)
 		check_malloc(data, philo);
 	philo->thread_id = 0;
-	// philo->last_meal = 0;
 	philo->time_to_die = data->time_to_die;
 	philo->time_to_eat = data->time_to_eat;
 	philo->time_to_sleep = data->time_to_sleep;
 	philo->min_nb_meals = data->min_nb_meals;
-	philo->left_fork = NULL;
-	philo->right_fork = NULL;
-	// philo->nb_forks = init_nb_forks(data);
 	philo->nb_meals = init_nb_meals(data);
 	philo->print = data->print;
 	philo->ongoing = data->ongoing;

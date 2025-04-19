@@ -6,18 +6,18 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 11:43:30 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/19 13:57:09 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <string.h> // memset
-# include <stdio.h> // printf
-# include <stdlib.h> // malloc, free
-# include <unistd.h> // write
-# include <sys/time.h> // gettimeofday
+# include <string.h>	// memset
+# include <stdio.h>		// printf
+# include <stdlib.h>	// malloc, free
+# include <unistd.h>	// write
+# include <sys/time.h>	// gettimeofday
 # include <pthread.h>
 # include <stdbool.h>
 # include <limits.h>
@@ -39,12 +39,6 @@ typedef enum	e_act
 	SLEEPING,
 	THINKING
 }	t_act;
-
-// typedef struct s_nb_forks
-// {
-// 	int		count;
-// 	t_mutex	nb_forks_m;
-// }	t_nb_forks;
 
 typedef struct s_fork
 {
@@ -88,18 +82,15 @@ typedef struct s_phi
 {
 	pthread_t		thread_id;
 	int				index;
-	int				time_to_die; // same in data
-	int				time_to_eat; // same in data
-	int				time_to_sleep; // same in data
-	int				min_nb_meals; // same in data
-	// int				last_meal;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				min_nb_meals;
 	int				nb_philo;
 	bool			debug;
 	t_time			*start;
 	t_time			*now;
 	t_nb_meals		*nb_meals;
-	t_fork			*left_fork;
-	t_fork			*right_fork;
 	t_fork			**forks;
 	t_print			*print;
 	t_ongoing		*ongoing;
@@ -195,8 +186,9 @@ bool	have_all_eaten_enough(t_data *data);
 
 // activity
 bool	think(t_phi *phi, int i_left);
-bool	take_leftfork(t_phi *phi, int i_left, int i_right);
-bool	take_rightfork(t_phi *phi, int i_right);
+// bool	take_leftfork(t_phi *phi, int i_left, int i_right);
+// bool	take_rightfork(t_phi *phi, int i_right);
+bool	try_take_forks(t_phi *phi, int i_left, int i_right);
 bool	eat(t_phi *phi, int i_left, int i_right);
 bool	gosleep(t_phi *phi);
 

@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:20:19 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 11:57:46 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/19 13:50:19 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,16 +98,11 @@ void	*monitor(void *dat)
 		save_time(phi->now);
 		is_ongoing = check_ongoing(data);
 		set_is_ongoing(data->ongoing, is_ongoing);
-		// if (elapsed > data->time_to_die)
-		// 	print_activity(phi, MSG_DIED);
 		if (i < data->nb_philo - 1)
 			i++;
 		else
 			i = 0;
-		// if (phi->debug)
-		// printf("%songoing ? - %d%s\n", P_BLUE, is_ongoing, P_NOC);
-		usleep(20);
+		usleep(10);
 	}
-	// printf("end of monitor\n");
 	return (NULL);
 }

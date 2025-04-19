@@ -51,13 +51,6 @@ bool	print_activity(t_phi *phi, char *msg)
 	is_ongoing = get_all_alive(phi->alive) && get_ongoing(phi);
 	if (is_ongoing || !ft_strcmp(msg, MSG_DIED))
 	{
-		// pthread_mutex_lock(&phi->print->print_m);
-		// code = gettimeofday(phi->now, NULL);
-		// if (code != 0)
-		// {
-		// 	pthread_mutex_unlock(&phi->print->print_m);
-		// 	return (false);
-		// }
 		save_time(phi->now);
 		if (phi->debug)
 		{
@@ -69,6 +62,8 @@ bool	print_activity(t_phi *phi, char *msg)
 			ms = get_elapsed_time_ms(phi->start, phi->now);
 			buffer = init_buffer(ms, phi->index, msg);
 			write(1, buffer, ft_strlen(buffer));
+			if (!ft_strcmp(msg, MSG_FORK))
+				write(1, buffer, ft_strlen(buffer));
 		}
 		else
 		{
@@ -77,8 +72,6 @@ bool	print_activity(t_phi *phi, char *msg)
 			buffer = init_buffer(ms, phi->index, msg);
 			write(1, buffer, ft_strlen(buffer));
 		}
-		// printf("%s%d%s %d %s%s", P_PINK, ms, get_color(phi->index), phi->index, P_NOC, msg);
-		// pthread_mutex_unlock(&phi->print->print_m);
 	}
 	return (true);
 }
@@ -102,9 +95,7 @@ void	*routine(void *philo)
 	{
 		if (!think(phi, i_left))
 			break ;
-		if (!take_leftfork(phi, i_left, i_right))
-			break ;
-		if (!take_rightfork(phi, i_right))
+		if (!try_take_forks(phi, i_left, i_right))
 			break ;
 		if (!eat(phi, i_left, i_right))
 			break ;
@@ -112,7 +103,6 @@ void	*routine(void *philo)
 			break ;
 		is_ongoing = get_ongoing(phi);
 	}
-	// printf("end of routine for %d\n", phi->index);
 	return (NULL);
 }
 
