@@ -12,13 +12,25 @@
 
 #include "philo.h"
 
+char	*append_time_and_index(char *dest, char *mschar, int index, \
+		char *indexchar)
+{
+	dest = ft_strcpy(dest, P_PINK, ft_strlen(P_PINK));
+	dest = ft_strcpy(dest, mschar, ft_strlen(mschar));
+	dest = ft_strcpy(dest, " ", 1);
+	dest = ft_strcpy(dest, get_color(index), ft_strlen(get_color(index)));
+	dest = ft_strcpy(dest, indexchar, ft_strlen(indexchar));
+	dest = ft_strcpy(dest, " ", 1);
+	return (dest);
+}
+
 char	*init_buffer(int ms, int index, char *msg)
 {
 	int		size;
-	char	*mschar;
-	char	*indexchar;
 	char	*buffer;
 	char	*dest;
+	char	*mschar;
+	char	*indexchar;
 
 	mschar = ft_itoa(ms);
 	indexchar = ft_itoa(index);
@@ -31,15 +43,9 @@ char	*init_buffer(int ms, int index, char *msg)
 	if (!buffer)
 		return (NULL);
 	dest = buffer;
-	dest = ft_strcpy(dest, P_PINK, ft_strlen(P_PINK));
-	dest = ft_strcpy(dest, mschar, ft_strlen(mschar));
-	dest = ft_strcpy(dest, " ", 1);
-	dest = ft_strcpy(dest, get_color(index), ft_strlen(get_color(index)));
-	dest = ft_strcpy(dest, indexchar, ft_strlen(indexchar));
-	dest = ft_strcpy(dest, " ", 1);
+	dest = append_time_and_index(dest, mschar, index, indexchar);
 	dest = ft_strcpy(dest, msg, ft_strlen(msg));
 	*dest = '\0';
-	dest -= size;
 	free(mschar);
 	free(indexchar);
 	return (buffer);
@@ -55,26 +61,13 @@ bool	print_activity(t_phi *phi, char *msg)
 	if (is_ongoing || !ft_strcmp(msg, MSG_DIED))
 	{
 		save_time(phi->now);
-		if (phi->debug)
-		{
-			printf("time is %ld s %ld usec\n", phi->now->tv_sec, phi->now->tv_usec);
-			printf("start time is %ld \n", phi->start->tv_usec);
-		}
-		if (ft_strcmp(msg, MSG_DIED))
-		{
-			ms = get_elapsed_time_ms(phi->start, phi->now);
-			buffer = init_buffer(ms, phi->index + 1, msg);
-			write(1, buffer, ft_strlen(buffer));
-			if (!ft_strcmp(msg, MSG_FORK))
-				write(1, buffer, ft_strlen(buffer));
-		}
-		else
-		{
+		if (!ft_strcmp(msg, MSG_DIED))
 			usleep(3);
-			ms = get_elapsed_time_ms(phi->start, phi->now);
-			buffer = init_buffer(ms, phi->index + 1, msg);
+		ms = get_elapsed_time_ms(phi->start, phi->now);
+		buffer = init_buffer(ms, phi->index + 1, msg);
+		write(1, buffer, ft_strlen(buffer));
+		if (!ft_strcmp(msg, MSG_FORK))
 			write(1, buffer, ft_strlen(buffer));
-		}
 		free(buffer);
 	}
 	return (true);
@@ -83,25 +76,23 @@ bool	print_activity(t_phi *phi, char *msg)
 void	*routine(void *philo)
 {
 	t_phi	*phi;
-	int		i_left;
 	int		i_right;
 	bool	is_ongoing;
 
 	phi = (t_phi *)philo;
 	if (phi->index % 2 != 0)
 		usleep(phi->time_to_eat * 1000);
-	i_left = phi->index;
 	i_right = phi->index + 1;
 	if (phi->nb_philo == phi->index + 1)
 		i_right = 0;
 	is_ongoing = true;
 	while (is_ongoing)
 	{
-		if (!think(phi, i_left))
+		if (!think(phi, phi->index))
 			break ;
-		if (!try_take_forks(phi, i_left, i_right))
+		if (!try_take_forks(phi, phi->index, i_right))
 			break ;
-		if (!eat(phi, i_left, i_right))
+		if (!eat(phi, phi->index, i_right))
 			break ;
 		if (!gosleep(phi))
 			break ;
@@ -125,8 +116,7 @@ void	live_love_pray(t_data *data)
 		save_time(philo->now);
 		philo->last_meal = init_last_meal(philo);
 		pthread_create(&thread, NULL, routine, philo);
-		data->threads[i] = thread;
-		i++;
+		data->threads[i++] = thread;
 	}
 	pthread_create(&thread, NULL, monitor, data);
 	data->monitor = thread;
@@ -139,4 +129,3 @@ void	live_love_pray(t_data *data)
 	}
 	pthread_join(data->monitor, NULL);
 }
-

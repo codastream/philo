@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:23:51 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/18 21:54:22 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/19 14:17:42 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ bool	get_ongoing(t_phi *phi)
 
 bool	get_all_alive(t_alive *alive)
 {
-	bool 	are_all_alive;
+	bool	are_all_alive;
 
 	pthread_mutex_lock(&alive->alive_m);
 	are_all_alive = alive->all_alive;

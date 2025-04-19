@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:49:03 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 13:52:05 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/19 14:17:05 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_fork	*init_fork(t_data *data, int i)
 	return (fork);
 }
 
-t_phi *new_philo(t_data *data)
+t_phi	*new_philo(t_data *data)
 {
 	t_phi	*philo;
 
@@ -63,7 +63,7 @@ t_phi *new_philo(t_data *data)
 
 void	create_philosophers(t_data *data)
 {
-	int	i;
+	int		i;
 	t_phi	*philo;
 
 	data->philosophers = malloc((data->nb_philo) * sizeof(t_phi));
@@ -81,7 +81,7 @@ void	create_philosophers(t_data *data)
 
 void	create_forks(t_data *data)
 {
-	int	i;
+	int		i;
 	t_fork	*fork;
 
 	data->forks = malloc(data->nb_philo * sizeof(t_fork));

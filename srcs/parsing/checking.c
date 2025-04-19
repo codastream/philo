@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:49:03 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/15 12:44:08 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/19 14:16:39 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	is_pos_atoi_string(char *s)
 	return (true);
 }
 
-bool	check_args(int	ac, char **av)
+bool	check_args(int ac, char **av)
 {
 	int	i;
 	int	int_arg_nb;

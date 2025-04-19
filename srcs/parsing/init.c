@@ -6,15 +6,15 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:46:29 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/18 21:49:27 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/19 14:17:32 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_nb_meals *init_nb_meals(t_data *data)
+t_nb_meals	*init_nb_meals(t_data *data)
 {
-	t_nb_meals *nb_meals;
+	t_nb_meals	*nb_meals;
 
 	nb_meals = malloc(1 * sizeof(t_nb_meals));
 	check_malloc(data, nb_meals);
@@ -75,7 +75,7 @@ t_last_meal	*init_last_meal(t_phi *phi)
 
 t_alive	*init_alive(t_data *data)
 {
-	t_alive *alive;
+	t_alive	*alive;
 
 	alive = malloc(1 * sizeof(t_alive));
 	check_malloc(data, alive);

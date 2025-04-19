@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:38 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 11:28:09 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/19 14:15:38 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 
 int	main(int ac, char **av)
 {
+	t_data	*data;
+
 	if (check_args(--ac, ++av))
 	{
-		t_data	*data;
 		data = malloc(1 * sizeof(t_data));
 		if (!data)
 			return (EXIT_FAILURE);
 		if (!parse_args(data, ac, av))
 		{
-			ft_puterr("usage: philo\n<number_of_philosophers>\n<time_to_die>\n<time_to_eat>\n<time_to_sleep>\n[number_of_times_each_philosopher_must_eat]\n");
+			ft_puterr(MSG_USAGE);
 			return (EXIT_FAILURE);
 		}
 		live_love_pray(data);
@@ -30,8 +31,5 @@ int	main(int ac, char **av)
 		exit(EXIT_SUCCESS);
 	}
 	else
-	{
-		ft_puterr("usage: philo\n<number_of_philosophers>\n<time_to_die>\n<time_to_eat>\n<time_to_sleep>\n[number_of_times_each_philosopher_must_eat]\n");
-	}
+		ft_puterr(MSG_USAGE);
 }
-

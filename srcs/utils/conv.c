@@ -6,12 +6,11 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:44:31 by fpetit            #+#    #+#             */
-/*   Updated: 2025/01/24 14:17:05 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/19 14:21:15 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 static void	skip_blanks(const char **str)
 {
@@ -33,7 +32,7 @@ static int	check_neg(const char **nptr)
 	return (neg);
 }
 
-int		ft_atoi(const char *nb)
+int	ft_atoi(const char *nb)
 {
 	int			neg;
 	long		result;

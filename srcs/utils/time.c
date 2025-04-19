@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:26:36 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 11:43:47 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/19 14:18:46 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	save_time(t_time *time)
 	return (EXIT_FAILURE);
 }
 
-int		get_elapsed_meal_ms(int last_meal, t_time *now)
+int	get_elapsed_meal_ms(int last_meal, t_time *now)
 {
 	int	msec_now;
 
@@ -31,7 +31,7 @@ int		get_elapsed_meal_ms(int last_meal, t_time *now)
 	return (msec_now - last_meal);
 }
 
-int		get_elapsed_time_ms(t_time *start, t_time *to)
+int	get_elapsed_time_ms(t_time *start, t_time *to)
 {
 	int	msec_start;
 	int	msec_to;
@@ -44,7 +44,7 @@ int		get_elapsed_time_ms(t_time *start, t_time *to)
 void	move_time(t_time *time, int ms)
 {
 	int	sec;
-	int usec;
+	int	usec;
 
 	sec = ms / 1000;
 	usec = ms * 1000;

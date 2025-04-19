@@ -81,7 +81,7 @@ SRCS_FILES:=	main.c\
 				routine/mutex_set.c\
 				utils/conv.c\
 				utils/errors.c\
-				utils/ft_itoa.c\
+				utils/itoa.c\
 				utils/mem.c\
 				utils/print.c\
 				utils/strings.c\
