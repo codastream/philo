@@ -22,7 +22,8 @@ char	*init_buffer(int ms, int index, char *msg)
 
 	mschar = ft_itoa(ms);
 	indexchar = ft_itoa(index);
-
+	if (!mschar || !indexchar)
+		return (NULL);
 	size = ft_strlen(P_PINK) + ft_strlen(mschar) + 1 \
 		+ ft_strlen(get_color(index)) + ft_strlen(indexchar) \
 		+ ft_strlen(P_NOC) + 1 + ft_strlen(msg) + 1;
@@ -39,6 +40,8 @@ char	*init_buffer(int ms, int index, char *msg)
 	dest = ft_strcpy(dest, msg, ft_strlen(msg));
 	*dest = '\0';
 	dest -= size;
+	free(mschar);
+	free(indexchar);
 	return (buffer);
 }
 
@@ -60,7 +63,7 @@ bool	print_activity(t_phi *phi, char *msg)
 		if (ft_strcmp(msg, MSG_DIED))
 		{
 			ms = get_elapsed_time_ms(phi->start, phi->now);
-			buffer = init_buffer(ms, phi->index, msg);
+			buffer = init_buffer(ms, phi->index + 1, msg);
 			write(1, buffer, ft_strlen(buffer));
 			if (!ft_strcmp(msg, MSG_FORK))
 				write(1, buffer, ft_strlen(buffer));
@@ -69,9 +72,10 @@ bool	print_activity(t_phi *phi, char *msg)
 		{
 			usleep(3);
 			ms = get_elapsed_time_ms(phi->start, phi->now);
-			buffer = init_buffer(ms, phi->index, msg);
+			buffer = init_buffer(ms, phi->index + 1, msg);
 			write(1, buffer, ft_strlen(buffer));
 		}
+		free(buffer);
 	}
 	return (true);
 }
