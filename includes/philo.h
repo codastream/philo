@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 19:28:34 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/20 18:44:53 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ typedef struct s_data
 	t_ongoing	*ongoing;
 	t_alive		*alive;
 	t_time		*start;
+	t_time		*now;
 	t_phi		**philosophers;
 	t_fork		**forks;
 	bool		is_end;

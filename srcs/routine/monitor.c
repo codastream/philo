@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:20:19 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 13:50:19 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/20 19:57:02 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ bool	have_all_eaten_enough(t_data *data)
 	if (enough == UNSET)
 		return (true);
 	i = 0;
-	while (data->philosophers[i])
+	while (i < data->nb_philo)
 	{
 		nb_meals = get_nb_meal(data->philosophers[i]);
 		if (data->debug)
@@ -36,13 +36,13 @@ bool	have_all_eaten_enough(t_data *data)
 	return (true);
 }
 
-bool	is_alive(t_phi *phi)
+bool	is_alive(t_data *data, t_phi *phi)
 {
 	int	elapsed;
 	int	last_meal;
 
 	last_meal = get_last_meal(phi);
-	elapsed = get_elapsed_meal_ms(last_meal, phi->now);
+	elapsed = get_elapsed_meal_ms(last_meal, data->now);
 	if (elapsed > phi->time_to_die)
 	{
 		set_death(phi->alive);
@@ -53,14 +53,14 @@ bool	is_alive(t_phi *phi)
 	return (true);
 }
 
-bool	check_all_phi(t_data *data, bool (*f) (t_phi *))
+bool	check_all_phi(t_data *data, bool (*f) (t_data *, t_phi *))
 {
 	int	i;
 
 	i = 0;
 	while (i < data->nb_philo)
 	{
-		if (!f(data->philosophers[i]))
+		if (!f(data, data->philosophers[i]))
 			return (false);
 		i++;
 	}
@@ -95,7 +95,6 @@ void	*monitor(void *dat)
 	while (is_ongoing)
 	{
 		phi = data->philosophers[i];
-		save_time(phi->now);
 		is_ongoing = check_ongoing(data);
 		set_is_ongoing(data->ongoing, is_ongoing);
 		if (i < data->nb_philo - 1)

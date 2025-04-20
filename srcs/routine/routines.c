@@ -69,7 +69,7 @@ bool	print_activity(t_phi *phi, char *msg)
 		ms = get_elapsed_time_ms(phi->start, phi->now);
 		buffer = init_buffer(ms, phi->index + 1, msg);
 		write(1, buffer, ft_strlen(buffer));
-		if (!ft_strcmp(msg, MSG_FORK))
+		if (!ft_strcmp(msg, MSG_FORK) && phi->nb_philo > 1)
 			write(1, buffer, ft_strlen(buffer));
 		free(buffer);
 	}

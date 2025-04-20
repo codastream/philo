@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:21:33 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 17:23:39 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/20 19:46:41 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	clean(t_data *data)
 		free(data->print);
 	if (data->start)
 		free(data->start);
+	if (data->now)
+		free(data->now);
 	if (data->threads)
 		free(data->threads);
 	free(data);

@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:49:03 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 17:49:46 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/20 19:44:31 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ bool	parse_args(t_data *data, int ac, char **av)
 	if (ac < 4 || ac > 6)
 		return (false);
 	data->start = malloc(1 * sizeof(t_time));
-	if (!data->start)
+	data->now = malloc(1 * sizeof(t_time));
+	if (!data->start || !data->now)
 		return (false);
 	data->nb_philo = ft_atoi(av[0]);
 	data->time_to_die = ft_atoi(av[1]);
