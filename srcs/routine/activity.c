@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:21:00 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 14:18:13 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/20 21:40:08 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,22 @@ bool	gosleep(t_phi *phi)
 		return (false);
 	usleep(phi->time_to_sleep * 1000);
 	move_time(phi->now, phi->time_to_sleep);
+	return (true);
+}
+
+bool	print_death(t_data *data, t_phi *phi, char *msg)
+{
+	int		ms;
+	char	*buffer;
+
+	if (!ft_strcmp(msg, MSG_DIED))
+	{
+		save_time(data->now);
+		usleep(3);
+		ms = get_elapsed_time_ms(phi->start, data->now);
+		buffer = init_buffer(ms, phi->index + 1, msg);
+		write(1, buffer, ft_strlen(buffer));
+		free(buffer);
+	}
 	return (true);
 }

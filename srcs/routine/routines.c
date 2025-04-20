@@ -61,11 +61,9 @@ bool	print_activity(t_phi *phi, char *msg)
 	char	*buffer;
 
 	is_ongoing = get_all_alive(phi->alive) && get_ongoing(phi);
-	if (is_ongoing || !ft_strcmp(msg, MSG_DIED))
+	if (is_ongoing)
 	{
 		save_time(phi->now);
-		if (!ft_strcmp(msg, MSG_DIED))
-			usleep(3);
 		ms = get_elapsed_time_ms(phi->start, phi->now);
 		buffer = init_buffer(ms, phi->index + 1, msg);
 		write(1, buffer, ft_strlen(buffer));

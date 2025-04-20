@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/20 20:25:46 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/20 21:40:48 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,11 +126,11 @@ void		add_philosopher(t_data *data, int index);
 bool		parse_args(t_data *data, int ac, char **av);
 
 // init
-t_nb_meals	*init_nb_meals(t_data *data);
-t_alive		*init_alive(t_data *data);
-t_ongoing	*init_ongoing(t_data *data);
+t_nb_meals	*init_nb_meals(void);
+t_alive		*init_alive(void);
+t_ongoing	*init_ongoing(void);
 t_last_meal	*init_last_meal(t_phi *phi);
-void		fill_args(t_data **data, int ac, char **av);
+void		fill_args(t_data *data, int ac, char **av);
 
 // mutex set
 void		set_fork_status(t_fork *fork, bool is_taken);
@@ -150,6 +150,8 @@ int			get_last_meal(t_phi *phi);
 void		check_malloc(t_data *data, void *allocated);
 void		handle_error(t_data *data, char *msg);
 void		clean(t_data *data);
+void		free_philo(t_phi **philos);
+void		free_forks(t_fork **forks);
 
 // util strings
 int			ft_strlen(char *s);
@@ -177,6 +179,9 @@ int			get_time_ms(t_time *time);
 void		move_time(t_time *time, int ms);
 
 // routines
+char		*append_time_and_index(char *dest, char *mschar, int index, \
+				char *indexchar);
+char		*init_buffer(int ms, int index, char *msg);
 void		live_love_pray(t_data *data);
 bool		get_ongoing(t_phi *phi);
 bool		print_activity(t_phi *phi, char *msg);
@@ -190,5 +195,6 @@ bool		think(t_phi *phi, int i_left);
 bool		try_take_forks(t_phi *phi, int i_left, int i_right);
 bool		eat(t_phi *phi, int i_left, int i_right);
 bool		gosleep(t_phi *phi);
+bool		print_death(t_data *data, t_phi *phi, char *msg);
 
 #endif

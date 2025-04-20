@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:20:19 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/20 19:57:02 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/20 21:37:35 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool	is_alive(t_data *data, t_phi *phi)
 	{
 		set_death(phi->alive);
 		usleep(1);
-		print_activity(phi, MSG_DIED);
+		print_death(data, phi, MSG_DIED);
 		return (false);
 	}
 	return (true);
