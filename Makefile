@@ -4,7 +4,7 @@ BONUS_NAME	:=	philo_bonus
 #==============================COMPIL===========================#
 
 CC			:=	cc
-CFLAGS		:=	-MP -MMD -Wall -Wextra -Werror
+CFLAGS		:=	-Wall -Wextra -Werror
 
 ifeq ($(DEBUG), 1)
 	CFLAGS += -g
@@ -92,6 +92,7 @@ SRCS_FILES_BONUS:= 	main_bonus.c\
 					parsing/parsing_bonus.c\
 					routine/routines_bonus.c\
 					routine/activity_bonus.c\
+					routine/monitor_bonus.c\
 					utils/conv_bonus.c\
 					utils/errors_bonus.c\
 					utils/itoa_bonus.c\
@@ -179,6 +180,9 @@ fclean: clean
 
 re: fclean
 	@make
+
+rebonus: fclean
+	@make bonus
 
 .PHONY: all clean fclean re clone
 
