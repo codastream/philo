@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:38 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 17:58:59 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/20 20:15:02 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int ac, char **av)
 		if (!parse_args(data, ac, av))
 		{
 			clean(data);
-			ft_puterr(MSG_USAGE);
+			ft_puterr(MSG_MEM);
 			return (EXIT_FAILURE);
 		}
 		live_love_pray(data);

@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/20 18:44:53 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/20 20:25:46 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define MSG_EAT "is eating\n"
 # define MSG_SLEEP "is sleeping\n"
 # define MSG_DIED "died\n"
+# define MSG_MEM "\033[1;31mMemory error\n\033[0m"
 # define MSG_VALID "\033[1;31mplease enter a number between 1 \
 and 2 147 483 647 included\033[0m\n"
 # define MSG_USAGE "\033[1;31musage:\033[0m\n\033[0;34mphilo\033[0m \
@@ -58,12 +59,6 @@ typedef struct s_nb_meals
 	int		count;
 	t_mutex	nb_meals_m;
 }	t_nb_meals;
-
-typedef struct s_print
-{
-	bool	can_print;
-	t_mutex	print_m;
-}	t_print;
 
 typedef struct s_last_meal
 {
@@ -99,7 +94,6 @@ typedef struct s_phi
 	t_time			*now;
 	t_nb_meals		*nb_meals;
 	t_fork			**forks;
-	t_print			*print;
 	t_ongoing		*ongoing;
 	t_alive			*alive;
 	t_last_meal		*last_meal;
@@ -114,7 +108,6 @@ typedef struct s_data
 	int			min_nb_meals;
 	pthread_t	*threads;
 	pthread_t	monitor;
-	t_print		*print;
 	t_ongoing	*ongoing;
 	t_alive		*alive;
 	t_time		*start;
@@ -134,10 +127,10 @@ bool		parse_args(t_data *data, int ac, char **av);
 
 // init
 t_nb_meals	*init_nb_meals(t_data *data);
-t_print		*init_print(t_data *data);
 t_alive		*init_alive(t_data *data);
 t_ongoing	*init_ongoing(t_data *data);
 t_last_meal	*init_last_meal(t_phi *phi);
+void		fill_args(t_data **data, int ac, char **av);
 
 // mutex set
 void		set_fork_status(t_fork *fork, bool is_taken);

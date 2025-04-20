@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:46:29 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 14:17:32 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/20 20:27:31 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_nb_meals	*init_nb_meals(t_data *data)
 	t_nb_meals	*nb_meals;
 
 	nb_meals = malloc(1 * sizeof(t_nb_meals));
+	if (!nb_meals)
+		return (NULL);
 	check_malloc(data, nb_meals);
 	if (pthread_mutex_init(&nb_meals->nb_meals_m, NULL) != 0)
 	{
@@ -27,26 +29,13 @@ t_nb_meals	*init_nb_meals(t_data *data)
 	return (nb_meals);
 }
 
-t_print	*init_print(t_data *data)
-{
-	t_print	*print;
-
-	print = malloc(1 * sizeof(t_print));
-	check_malloc(data, print);
-	if (pthread_mutex_init(&print->print_m, NULL) != 0)
-	{
-		free(print);
-		return (NULL);
-	}
-	print->can_print = true;
-	return (print);
-}
-
 t_ongoing	*init_ongoing(t_data *data)
 {
 	t_ongoing	*ongoing;
 
 	ongoing = malloc(1 * sizeof(t_ongoing));
+	if (!ongoing)
+		return (NULL);
 	check_malloc(data, ongoing);
 	if (pthread_mutex_init(&ongoing->ongoing_m, NULL) != 0)
 	{
@@ -78,6 +67,8 @@ t_alive	*init_alive(t_data *data)
 	t_alive	*alive;
 
 	alive = malloc(1 * sizeof(t_alive));
+	if (!alive)
+		return (NULL);
 	check_malloc(data, alive);
 	if (pthread_mutex_init(&alive->alive_m, NULL) != 0)
 	{
@@ -86,4 +77,18 @@ t_alive	*init_alive(t_data *data)
 	}
 	alive->all_alive = true;
 	return (alive);
+}
+
+void	fill_args(t_data **data, int ac, char **av)
+{
+	(*data)->nb_philo = ft_atoi(av[0]);
+	(*data)->time_to_die = ft_atoi(av[1]);
+	(*data)->time_to_eat = ft_atoi(av[2]);
+	(*data)->time_to_sleep = ft_atoi(av[3]);
+	(*data)->min_nb_meals = UNSET;
+	if (ac >= 5)
+		(*data)->min_nb_meals = ft_atoi(av[4]);
+	(*data)->debug = false;
+	if (ac == 6)
+		(*data)->debug = true;
 }
