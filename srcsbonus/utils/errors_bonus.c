@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   errors_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:21:33 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 17:23:39 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/20 17:48:09 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void	free_philo(t_data *data)
 	while (i < data->nb_philo)
 	{
 		philo = data->philosophers[i];
-		free(philo->nb_meals);
-		free(philo->last_meal);
 		free(philo->now);
 		free(philo);
 		i++;
@@ -30,31 +28,12 @@ void	free_philo(t_data *data)
 	free(data->philosophers);
 }
 
-void	free_forks(t_data *data)
-{
-	int		i;
-
-	i = 0;
-	while (i < data->nb_philo)
-	{
-		free(data->forks[i]);
-		i++;
-	}
-	free(data->forks);
-}
-
 void	clean(t_data *data)
 {
 	if (data->philosophers)
 		free_philo(data);
 	if (data->forks)
-		free_forks(data);
-	if (data->alive)
-		free(data->alive);
-	if (data->ongoing)
-		free(data->ongoing);
-	if (data->print)
-		free(data->print);
+		free(data->forks);
 	if (data->start)
 		free(data->start);
 	if (data->threads)

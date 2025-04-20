@@ -57,8 +57,10 @@ char	*init_buffer(int ms, int index, char *msg)
 bool	print_activity(t_phi *phi, char *msg)
 {
 	char	*buffer;
+	int		elapsed;
 
-	buffer = init_buffer(get_time_ms(phi->now), phi->index, msg);
+	elapsed = get_elapsed_time_ms(phi->start, phi->now);
+	buffer = init_buffer(elapsed, phi->index, msg);
 	write(STDOUT_FILENO, buffer, ft_strlen(buffer));
 	free(buffer);
 	return (true);
