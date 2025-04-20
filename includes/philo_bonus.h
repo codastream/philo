@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 20:53:29 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/20 16:59:27 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,14 @@ typedef struct s_phi
 	int				time_to_sleep;
 	int				min_nb_meals;
 	int				nb_philo;
-	bool			debug;
-	bool			dead;
-	t_time			*start;
-	t_time			*now;
 	int				nb_meals;
 	int				last_meal;
+	t_time			*start;
+	t_time			*now;
+	bool			is_dead;
 }	t_phi;
+
+typedef void (*t_activity)(t_phi *);
 
 typedef struct s_data
 {
@@ -77,13 +78,12 @@ typedef struct s_data
 	int			*philo_pids;
 	t_time		*start;
 	t_phi		**philosophers;
+	sem_t		*forks;
+	t_activity	*activities;
+	pthread_t	monitor;
 	bool		is_end;
 	bool		debug;
-	pthread_t	monitor;
-	sem_t		*forks;
 }	t_data;
-
-typedef void (*t_act)(t_phi *);
 
 // checking
 bool		check_args(int ac, char **av);
@@ -128,7 +128,6 @@ void		move_time(t_time *time, int ms);
 
 // routines
 int			live_love_pray(t_data *data);
-bool		get_ongoing(t_phi *phi);
 bool		print_activity(t_phi *phi, char *msg);
 
 // monitor
@@ -136,9 +135,9 @@ void		*monitor(void *dat);
 bool		have_all_eaten_enough(t_data *data);
 
 // activity
-bool		think(t_phi *phi, int i_left);
-bool		try_take_forks(t_phi *phi, int i_left, int i_right);
-bool		eat(t_phi *phi, int i_left, int i_right);
+bool		think(t_phi *phi);
+bool		try_take_forks(t_phi *phi);
+bool		eat(t_phi *phi);
 bool		gosleep(t_phi *phi);
 
 #endif

@@ -62,7 +62,7 @@ RESET_BG	= \033[0m
 #================================DIRS============================#
 
 SRC_DIR			:=  srcs
-SRC_BONUS_DIR	:=	bonus
+SRC_BONUS_DIR	:=	srcsbonus
 INCLUDES_DIR	:=	includes
 BUILD_DIR		:=	.build
 
@@ -87,10 +87,21 @@ SRCS_FILES:=	main.c\
 				utils/strings.c\
 				utils/time.c\
 
-SRCS_FILES_BONUS:= $(patsubst %.c, %_bonus.c, $(SRCS_FILES))\
+SRCS_FILES_BONUS:= 	main_bonus.c\
+					parsing/checking_bonus.c\
+					parsing/parsing_bonus.c\
+					routine/routines_bonus.c\
+					routine/activity_bonus.c\
+					utils/conv_bonus.c\
+					utils/errors_bonus.c\
+					utils/itoa_bonus.c\
+					utils/mem_bonus.c\
+					utils/print_bonus.c\
+					utils/strings_bonus.c\
+					utils/time_bonus.c\
 
 SRCS:=			$(addprefix $(SRC_DIR)/, $(SRCS_FILES))
-SRCS_BONUS:=	$(addprefix $(SRC_DIR)/$(SRC_BONUS_DIR)/, $(SRCS_FILES_BONUS))
+SRCS_BONUS:=	$(addprefix $(SRC_BONUS_DIR)/, $(SRCS_FILES_BONUS))
 
 #=============================OBJECTS===========================#
 

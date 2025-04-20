@@ -56,51 +56,50 @@ char	*init_buffer(int ms, int index, char *msg)
 
 bool	print_activity(t_phi *phi, char *msg)
 {
-	int		ms;
-	bool	is_ongoing;
 	char	*buffer;
 
+	buffer = init_buffer(get_time_ms(phi->now), phi->index, msg);
+	write(STDOUT_FILENO, buffer, ft_strlen(buffer));
+	free(buffer);
 	return (true);
 }
 
-void	do_activity(void *philo, t_act f)
+void	do_activity(t_phi *phi, t_activity f)
 {
-	t_phi	*phi;
-
 	f(phi);
-	return (NULL);
+	return ;
 }
 
 int	live_love_pray(t_data *data)
 {
 	int			i;
-	t_phi		*philo;
+	t_phi		*phi;
 	pthread_t	thread;
 	int			pid;
-	bool		all_alive;
+	bool		is_end;
 	int			act_i;
-	t_act		f;
 
 	i = 0;
 	save_time(data->start);
 	data->forks = sem_open("/forks", O_CREAT, 0644, data->nb_philo);
 	if (data->forks == SEM_FAILED)
 		return (EXIT_FAILURE);
+	is_end = false;
 	while (i < data->nb_philo)
 	{
-		philo = data->philosophers[i];
-		philo->start = data->start;
-		save_time(philo->now);
-		philo->last_meal = get_time_ms(philo->now);
+		phi = data->philosophers[i];
+		phi->start = data->start;
+		save_time(phi->now);
+		phi->last_meal = get_time_ms(phi->now);
 		act_i = 0;
-		while (all_alive)
+		while (!is_end)
 		{
 			pid = fork();
 			if (pid == -1)
 				return (EXIT_FAILURE);
 			if (pid == 0)
 			{
-
+				think(phi);
 			}
 			data->philo_pids[i] = pid;
 		}

@@ -6,27 +6,11 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:49:03 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 19:37:58 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/20 16:55:17 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-t_fork	*init_fork(t_data *data, int i)
-{
-	t_fork	*fork;
-
-	fork = malloc(1 * sizeof(t_fork));
-	check_malloc(data, fork);
-	if (pthread_mutex_init(&fork->fork_m, NULL) != 0)
-	{
-		free(fork);
-		return (NULL);
-	}
-	fork->is_taken = false;
-	fork->index = i;
-	return (fork);
-}
 
 t_phi	*new_philo(t_data *data)
 {
@@ -40,14 +24,9 @@ t_phi	*new_philo(t_data *data)
 	philo->time_to_eat = data->time_to_eat;
 	philo->time_to_sleep = data->time_to_sleep;
 	philo->min_nb_meals = data->min_nb_meals;
-	philo->nb_meals = init_nb_meals(data);
-	philo->print = data->print;
-	philo->ongoing = data->ongoing;
+	philo->nb_meals = 0;
 	philo->nb_philo = data->nb_philo;
-	philo->forks = data->forks;
-	philo->alive = data->alive;
 	philo->now = malloc(sizeof(t_time));
-	philo->debug = data->debug;
 	return (philo);
 }
 
@@ -65,22 +44,6 @@ void	create_philosophers(t_data *data)
 		check_malloc(data, philo);
 		philo->index = i;
 		data->philosophers[i] = philo;
-		i++;
-	}
-}
-
-void	create_forks(t_data *data)
-{
-	int		i;
-	t_fork	*fork;
-
-	data->forks = malloc(data->nb_philo * sizeof(t_fork));
-	check_malloc(data, data->forks);
-	i = 0;
-	while (i < data->nb_philo)
-	{
-		fork = init_fork(data, i);
-		data->forks[i] = fork;
 		i++;
 	}
 }
@@ -105,10 +68,12 @@ bool	parse_args(t_data *data, int ac, char **av)
 	data->philo_pids = malloc(data->nb_philo * sizeof(int));
 	if (!data->philo_pids)
 		return (false);
-	data->print = init_print(data);
-	data->ongoing = init_ongoing(data);
-	data->alive = init_alive(data);
-	create_forks(data);
+	data->forks = sem_open("/forks", O_CREAT, 0644, data->nb_philo);
+	if (data->forks == SEM_FAILED)
+		return (false);
+	data->activities = malloc(4 * sizeof(t_activity));
+	if (!data->activities)
+		return (false);
 	create_philosophers(data);
 	return (true);
 }
