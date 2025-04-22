@@ -6,7 +6,5 @@
 *.o
 */*.d
 libft.a
-philo
-philo_bonus
 .nfs*
 main2.c
