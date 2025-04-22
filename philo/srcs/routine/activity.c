@@ -6,46 +6,35 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:21:00 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/20 21:40:08 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/22 21:43:51 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../includes/philo.h"
 
-bool	think(t_phi *phi, int i_left)
+bool	think(t_phi *phi)
 {
 	if (!get_ongoing(phi))
 		return (false);
 	if (!print_activity(phi, MSG_THINK))
 		return (false);
-	while (!get_fork_availability(phi->forks[i_left]))
-	{
-		usleep(30);
-		move_time(phi->now, 30);
-	}
 	return (true);
 }
 
-bool	try_take_forks(t_phi *phi, int i_left, int i_right)
+bool	try_take_forks(t_phi *phi)
 {
 	if (!get_ongoing(phi))
 		return (false);
-	while (!get_fork_availability(phi->forks[i_left]) \
-		&& !get_fork_availability(phi->forks[i_right]))
-	{
-		usleep(30);
-		move_time(phi->now, 30);
-	}
-	set_fork_status(phi->forks[i_left], true);
-	set_fork_status(phi->forks[i_right], true);
+	pthread_mutex_lock(phi->fork1);
+	pthread_mutex_lock(phi->fork2);
 	if (!print_activity(phi, MSG_FORK))
 		return (false);
-	if (phi->nb_philo == 1)
+	if (!print_activity(phi, MSG_FORK))
 		return (false);
 	return (true);
 }
 
-bool	eat(t_phi *phi, int i_left, int i_right)
+bool	eat(t_phi *phi)
 {
 	if (!get_ongoing(phi))
 		return (false);
@@ -53,10 +42,11 @@ bool	eat(t_phi *phi, int i_left, int i_right)
 		return (false);
 	set_nb_meal_plus(phi->nb_meals);
 	update_last_meal(phi);
-	set_fork_status(phi->forks[i_left], false);
-	set_fork_status(phi->forks[i_right], false);
-	usleep(phi->time_to_eat * 1000);
-	move_time(phi->now, phi->time_to_eat);
+	save_time(phi->now);
+	extend_time_to_die(phi->timedie, phi->time_to_eat);
+	ft_sleep(phi->time_to_eat, phi);
+	pthread_mutex_unlock(phi->fork2);
+	pthread_mutex_unlock(phi->fork1);
 	return (true);
 }
 
@@ -66,8 +56,7 @@ bool	gosleep(t_phi *phi)
 		return (false);
 	if (!print_activity(phi, MSG_SLEEP))
 		return (false);
-	usleep(phi->time_to_sleep * 1000);
-	move_time(phi->now, phi->time_to_sleep);
+	ft_sleep(phi->time_to_sleep, phi);
 	return (true);
 }
 

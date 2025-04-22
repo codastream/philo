@@ -10,95 +10,68 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../includes/philo.h"
 
-char	*append_time_and_index(char *dest, char *mschar, int index, \
-		char *indexchar)
+void	solo(t_phi *phi)
 {
-	dest = ft_strcpy(dest, P_PINK, ft_strlen(P_PINK));
-	dest = ft_strcpy(dest, "[", 1);
-	dest = ft_strcpy(dest, mschar, ft_strlen(mschar));
-	dest = ft_strcpy(dest, "] ", 2);
-	dest = ft_strcpy(dest, get_color(index), ft_strlen(get_color(index)));
-	dest = ft_strcpy(dest, "[", 1);
-	dest = ft_strcpy(dest, indexchar, ft_strlen(indexchar));
-	dest = ft_strcpy(dest, "] ", 2);
-	dest = ft_strcpy(dest, P_NOC, ft_strlen(P_NOC));
-	return (dest);
+	pthread_mutex_lock(phi->forks[0]);
+	if (!print_activity(phi, MSG_FORK))
+		return ;
+	ft_sleep(-1, phi);
 }
 
-char	*init_buffer(int ms, int index, char *msg)
+void	many(t_phi *phi)
 {
-	int		size;
-	char	*buffer;
-	char	*dest;
-	char	*mschar;
-	char	*indexchar;
-
-	mschar = ft_itoa(ms);
-	indexchar = ft_itoa(index);
-	if (!mschar || !indexchar)
-		return (NULL);
-	size = ft_strlen(P_PINK) + 1 + ft_strlen(mschar) + 2 \
-		+ ft_strlen(get_color(index)) + 1 + ft_strlen(indexchar) \
-		+ 2 + ft_strlen(P_NOC) + ft_strlen(msg) + 1;
-	buffer = malloc(size * sizeof(char));
-	if (!buffer)
-		return (NULL);
-	dest = buffer;
-	dest = append_time_and_index(dest, mschar, index, indexchar);
-	dest = ft_strcpy(dest, msg, ft_strlen(msg));
-	*dest = '\0';
-	free(mschar);
-	free(indexchar);
-	return (buffer);
-}
-
-bool	print_activity(t_phi *phi, char *msg)
-{
-	int		ms;
 	bool	is_ongoing;
-	char	*buffer;
 
-	is_ongoing = get_all_alive(phi->alive) && get_ongoing(phi);
-	if (is_ongoing)
+	is_ongoing = true;
+	while (is_ongoing)
 	{
-		save_time(phi->now);
-		ms = get_elapsed_time_ms(phi->start, phi->now);
-		buffer = init_buffer(ms, phi->index + 1, msg);
-		write(1, buffer, ft_strlen(buffer));
-		if (!ft_strcmp(msg, MSG_FORK) && phi->nb_philo > 1)
-			write(1, buffer, ft_strlen(buffer));
-		free(buffer);
+		if (!try_take_forks(phi))
+			break ;
+		if (!eat(phi))
+			break ;
+		if (!gosleep(phi))
+			break ;
+		if (!think(phi))
+			break ;
+		is_ongoing = get_ongoing(phi);
 	}
-	return (true);
+}
+
+void	dispatch_forks(t_phi *phi)
+{
+	if (phi->index % 2 != 0)
+	{
+		phi->fork1 = phi->forks[phi->index];
+		phi->fork2 = phi->forks[phi->index + 1];
+	}
+	else
+	{
+		phi->fork1 = phi->forks[phi->index + 1];
+		phi->fork2 = phi->forks[phi->index];
+	}
+	if (phi->nb_philo == phi->index + 1)
+	{
+		phi->fork1 = phi->forks[phi->index];
+		phi->fork2 = phi->forks[0];
+	}
 }
 
 void	*routine(void *philo)
 {
 	t_phi	*phi;
-	int		i_right;
-	bool	is_ongoing;
 
 	phi = (t_phi *)philo;
-	if (phi->index % 2 != 0)
-		usleep(phi->time_to_eat * 1000);
-	i_right = phi->index + 1;
-	if (phi->nb_philo == phi->index + 1)
-		i_right = 0;
-	is_ongoing = true;
-	while (is_ongoing)
+	if (phi->nb_philo == 1)
 	{
-		if (!think(phi, phi->index))
-			break ;
-		if (!try_take_forks(phi, phi->index, i_right))
-			break ;
-		if (!eat(phi, phi->index, i_right))
-			break ;
-		if (!gosleep(phi))
-			break ;
-		is_ongoing = get_ongoing(phi);
+		solo(phi);
+		return (NULL);
 	}
+	dispatch_forks(phi);
+	// if (phi->index % 2 != 0)
+	// 	usleep((phi->time_to_eat - 1) * 1000);
+	many(phi);
 	return (NULL);
 }
 

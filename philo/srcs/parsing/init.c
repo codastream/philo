@@ -6,11 +6,11 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:46:29 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/20 21:11:09 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/22 20:10:52 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../includes/philo.h"
 
 t_nb_meals	*init_nb_meals(void)
 {
@@ -76,16 +76,18 @@ t_alive	*init_alive(void)
 	return (alive);
 }
 
-void	fill_args(t_data *data, int ac, char **av)
+t_die *init_timedie(int ms)
 {
-	data->nb_philo = ft_atoi(av[0]);
-	data->time_to_die = ft_atoi(av[1]);
-	data->time_to_eat = ft_atoi(av[2]);
-	data->time_to_sleep = ft_atoi(av[3]);
-	data->min_nb_meals = UNSET;
-	if (ac >= 5)
-		data->min_nb_meals = ft_atoi(av[4]);
-	data->debug = false;
-	if (ac == 6)
-		data->debug = true;
+	t_die	*timedie;
+
+	timedie = malloc(1 * sizeof(t_die));
+	if (!timedie)
+		return (NULL);
+	if (pthread_mutex_init(&timedie->timedie_m, NULL) != 0)
+	{
+		free(timedie);
+		return (NULL);
+	}
+	timedie->timedie = get_current_time_ms() + ms;
+	return (timedie);
 }

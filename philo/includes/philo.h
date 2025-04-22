@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/20 21:40:48 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/22 21:32:41 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ typedef enum e_act
 	THINKING
 }	t_act;
 
-typedef struct s_fork
-{
-	bool	is_taken;
-	t_mutex	fork_m;
-	int		index;
-}	t_fork;
+// typedef struct s_fork
+// {
+// 	bool	is_taken;
+// 	t_mutex	fork_m;
+// 	int		index;
+// }	t_fork;
 
 typedef struct s_nb_meals
 {
@@ -78,6 +78,12 @@ typedef struct s_alive
 	t_mutex	alive_m;
 }	t_alive;
 
+typedef struct t_die
+{
+	int		timedie;
+	t_mutex	timedie_m;
+}	t_die;
+
 typedef struct timeval	t_time;
 
 typedef struct s_phi
@@ -90,13 +96,16 @@ typedef struct s_phi
 	int				min_nb_meals;
 	int				nb_philo;
 	bool			debug;
+	t_mutex			*fork1;
+	t_mutex			*fork2;
 	t_time			*start;
 	t_time			*now;
 	t_nb_meals		*nb_meals;
-	t_fork			**forks;
-	t_ongoing		*ongoing;
-	t_alive			*alive;
 	t_last_meal		*last_meal;
+	t_alive			*alive;
+	t_die			*timedie;
+	t_mutex			**forks;
+	t_ongoing		*ongoing;
 }	t_phi;
 
 typedef struct s_data
@@ -113,7 +122,7 @@ typedef struct s_data
 	t_time		*start;
 	t_time		*now;
 	t_phi		**philosophers;
-	t_fork		**forks;
+	t_mutex		**forks;
 	bool		is_end;
 	bool		debug;
 }	t_data;
@@ -130,28 +139,34 @@ t_nb_meals	*init_nb_meals(void);
 t_alive		*init_alive(void);
 t_ongoing	*init_ongoing(void);
 t_last_meal	*init_last_meal(t_phi *phi);
+t_die 		*init_timedie(int ms);
+
+// args
 void		fill_args(t_data *data, int ac, char **av);
 
 // mutex set
-void		set_fork_status(t_fork *fork, bool is_taken);
+// void		lock_fork(t_mutex *fork);
+// void		unlock_fork(t_mutex *fork);
 void		set_is_ongoing(t_ongoing *ongoing, bool is_ongoing);
 void		set_nb_meal_plus(t_nb_meals *meals);
 void		update_last_meal(t_phi *phi);
+
+// death
+void		extend_time_to_die(t_die *die, int ms);
+int			get_timedie(t_die *die);
 void		set_death(t_alive *alive);
 
 // mutex get
-bool		get_fork_availability(t_fork *fork);
 int			get_nb_meal(t_phi *phi);
 bool		get_ongoing(t_phi *phi);
 bool		get_all_alive(t_alive *alive);
 int			get_last_meal(t_phi *phi);
 
 // errors
-void		check_malloc(t_data *data, void *allocated);
-void		handle_error(t_data *data, char *msg);
 void		clean(t_data *data);
-void		free_philo(t_phi **philos);
-void		free_forks(t_fork **forks);
+void		*free_phil(t_phi *philo);
+void		free_philos(t_phi **philos);
+void		free_forks(t_mutex **forks);
 
 // util strings
 int			ft_strlen(char *s);
@@ -177,6 +192,8 @@ int			get_elapsed_meal_ms(int last_meal, t_time *now);
 char		*get_color(int i);
 int			get_time_ms(t_time *time);
 void		move_time(t_time *time, int ms);
+int			get_current_time_ms(void);
+void		ft_sleep(int ms, t_phi *phi);
 
 // routines
 char		*append_time_and_index(char *dest, char *mschar, int index, \
@@ -184,6 +201,8 @@ char		*append_time_and_index(char *dest, char *mschar, int index, \
 char		*init_buffer(int ms, int index, char *msg);
 void		live_love_pray(t_data *data);
 bool		get_ongoing(t_phi *phi);
+
+// print
 bool		print_activity(t_phi *phi, char *msg);
 
 // monitor
@@ -191,9 +210,9 @@ void		*monitor(void *dat);
 bool		have_all_eaten_enough(t_data *data);
 
 // activity
-bool		think(t_phi *phi, int i_left);
-bool		try_take_forks(t_phi *phi, int i_left, int i_right);
-bool		eat(t_phi *phi, int i_left, int i_right);
+bool		think(t_phi *phi);
+bool		try_take_forks(t_phi *phi);
+bool		eat(t_phi *phi);
 bool		gosleep(t_phi *phi);
 bool		print_death(t_data *data, t_phi *phi, char *msg);
 

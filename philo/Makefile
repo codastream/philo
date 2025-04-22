@@ -64,12 +64,15 @@ BUILD_DIR		:=	.build
 SRCS_FILES:=	main.c\
 				parsing/checking.c\
 				parsing/parsing.c\
+				parsing/args.c\
 				parsing/init.c\
 				routine/routines.c\
 				routine/activity.c\
+				routine/death.c\
 				routine/monitor.c\
 				routine/mutex_get.c\
 				routine/mutex_set.c\
+				routine/print.c\
 				utils/conv.c\
 				utils/errors.c\
 				utils/itoa.c\
@@ -77,6 +80,7 @@ SRCS_FILES:=	main.c\
 				utils/print.c\
 				utils/strings.c\
 				utils/time.c\
+				utils/time2.c\
 
 SRCS:=			$(addprefix $(SRC_DIR)/, $(SRCS_FILES))
 
@@ -90,7 +94,7 @@ DEPS:=			${SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.d}
 
 #=============================INCLUDES===========================#
 
-INC			:=	-I $(INCLUDES_DIR)
+INC				:=	-I $(INCLUDES_DIR)
 
 #================================DIR=============================#
 

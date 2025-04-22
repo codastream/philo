@@ -6,31 +6,40 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:21:33 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/20 21:25:24 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/22 21:24:00 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../includes/philo.h"
 
-void	free_philo(t_phi **philos)
+void	*free_phil(t_phi *philo)
 {
-	t_phi	*philo;
+	if (philo->nb_meals)
+		free(philo->nb_meals);
+	if (philo->last_meal)
+		free(philo->last_meal);
+	if (philo->timedie)
+		free(philo->timedie);
+	if (philo->now)
+		free(philo->now);
+	free(philo);
+	return (NULL);
+}
+
+void	free_philos(t_phi **philos)
+{
 	int		i;
 
 	i = 0;
 	while (philos[i])
 	{
-		philo = philos[i];
-		free(philo->nb_meals);
-		free(philo->last_meal);
-		free(philo->now);
-		free(philo);
+		free_phil(philos[i]);
 		i++;
 	}
 	free(philos);
 }
 
-void	free_forks(t_fork **forks)
+void	free_forks(t_mutex **forks)
 {
 	int		i;
 
@@ -46,7 +55,7 @@ void	free_forks(t_fork **forks)
 void	clean(t_data *data)
 {
 	if (data->philosophers)
-		free_philo(data->philosophers);
+		free_philos(data->philosophers);
 	if (data->forks)
 		free_forks(data->forks);
 	if (data->alive)

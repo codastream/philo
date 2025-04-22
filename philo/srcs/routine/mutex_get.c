@@ -6,21 +6,11 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:23:51 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 14:17:42 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/22 21:32:19 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-
-bool	get_fork_availability(t_fork *fork)
-{
-	bool	is_taken;
-
-	pthread_mutex_lock(&fork->fork_m);
-	is_taken = fork->is_taken;
-	pthread_mutex_unlock(&fork->fork_m);
-	return (!is_taken);
-}
+#include "../includes/philo.h"
 
 int	get_nb_meal(t_phi *phi)
 {

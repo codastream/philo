@@ -6,18 +6,11 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:25:29 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/18 21:56:40 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/22 21:32:28 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-
-void	set_fork_status(t_fork *fork, bool is_taken)
-{
-	pthread_mutex_lock(&fork->fork_m);
-	fork->is_taken = is_taken;
-	pthread_mutex_unlock(&fork->fork_m);
-}
+#include "../includes/philo.h"
 
 void	set_is_ongoing(t_ongoing *ongoing, bool is_ongoing)
 {
@@ -39,11 +32,4 @@ void	update_last_meal(t_phi *phi)
 	save_time(phi->now);
 	phi->last_meal->last_meal = get_time_ms(phi->now);
 	pthread_mutex_unlock(&phi->last_meal->last_meal_m);
-}
-
-void	set_death(t_alive *alive)
-{
-	pthread_mutex_lock(&alive->alive_m);
-	alive->all_alive = false;
-	pthread_mutex_unlock(&alive->alive_m);
 }
