@@ -18,8 +18,6 @@ void	*free_phil(t_phi *philo)
 		free(philo->nb_meals);
 	if (philo->last_meal)
 		free(philo->last_meal);
-	if (philo->timedie)
-		free(philo->timedie);
 	if (philo->now)
 		free(philo->now);
 	free(philo);

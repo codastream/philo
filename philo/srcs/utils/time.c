@@ -41,22 +41,6 @@ int	get_elapsed_time_ms(t_time *start, t_time *to)
 	return (msec_to - msec_start);
 }
 
-void	move_time(t_time *time, int ms)
-{
-	int	sec;
-	int	usec;
-
-	sec = ms / 1000;
-	usec = ms * 1000;
-	time->tv_sec += sec;
-	time->tv_usec += usec;
-}
-
-long long	get_time_us(t_time *time)
-{
-	return (time->tv_sec * 1000000 + time->tv_usec);
-}
-
 int	get_time_ms(t_time *time)
 {
 	return (time->tv_sec * 1000 + time->tv_usec / 1000);

@@ -47,13 +47,6 @@ typedef enum e_act
 	THINKING
 }	t_act;
 
-// typedef struct s_fork
-// {
-// 	bool	is_taken;
-// 	t_mutex	fork_m;
-// 	int		index;
-// }	t_fork;
-
 typedef struct s_nb_meals
 {
 	int		count;
@@ -78,12 +71,6 @@ typedef struct s_alive
 	t_mutex	alive_m;
 }	t_alive;
 
-typedef struct t_die
-{
-	int		timedie;
-	t_mutex	timedie_m;
-}	t_die;
-
 typedef struct timeval	t_time;
 
 typedef struct s_phi
@@ -103,7 +90,6 @@ typedef struct s_phi
 	t_nb_meals		*nb_meals;
 	t_last_meal		*last_meal;
 	t_alive			*alive;
-	t_die			*timedie;
 	t_mutex			**forks;
 	t_ongoing		*ongoing;
 }	t_phi;
@@ -139,21 +125,16 @@ t_nb_meals	*init_nb_meals(void);
 t_alive		*init_alive(void);
 t_ongoing	*init_ongoing(void);
 t_last_meal	*init_last_meal(t_phi *phi);
-t_die 		*init_timedie(int ms);
 
 // args
 void		fill_args(t_data *data, int ac, char **av);
 
 // mutex set
-// void		lock_fork(t_mutex *fork);
-// void		unlock_fork(t_mutex *fork);
 void		set_is_ongoing(t_ongoing *ongoing, bool is_ongoing);
 void		set_nb_meal_plus(t_nb_meals *meals);
 void		update_last_meal(t_phi *phi);
 
 // death
-void		extend_time_to_die(t_die *die, t_phi *phi);
-int			get_timedie(t_die *die);
 void		set_death(t_alive *alive);
 
 // mutex get
@@ -189,13 +170,9 @@ char		*ft_strcpy(char *dest, const char *src, size_t n);
 int			save_time(t_time *time);
 int			get_elapsed_time_ms(t_time *start, t_time *to);
 int			get_elapsed_meal_ms(int last_meal, t_time *now);
-char		*get_color(int i);
 int			get_time_ms(t_time *time);
-long long	get_time_us(t_time *time);
-void		move_time(t_time *time, int ms);
 int			get_current_time_ms(void);
 int			get_now(t_time *time);
-long long	get_current_time_us(void);
 void		ft_sleep(int ms, t_phi *phi);
 
 // routines
@@ -206,6 +183,7 @@ void		live_love_pray(t_data *data);
 bool		get_ongoing(t_phi *phi);
 
 // print
+char		*get_color(int i);
 bool		print_activity(t_phi *phi, char *msg);
 
 // monitor

@@ -35,8 +35,7 @@ t_phi	*new_philo(t_data data)
 	if (!philo)
 		return (NULL);
 	philo->nb_meals = init_nb_meals();
-	philo->timedie = init_timedie(data.time_to_die);
-	if (!philo->nb_meals || !philo->timedie)
+	if (!philo->nb_meals)
 		return (free_phil(philo));
 	philo->thread_id = 0;
 	philo->time_to_die = data.time_to_die;

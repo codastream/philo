@@ -75,19 +75,3 @@ t_alive	*init_alive(void)
 	alive->all_alive = true;
 	return (alive);
 }
-
-t_die *init_timedie(int ms)
-{
-	t_die	*timedie;
-
-	timedie = malloc(1 * sizeof(t_die));
-	if (!timedie)
-		return (NULL);
-	if (pthread_mutex_init(&timedie->timedie_m, NULL) != 0)
-	{
-		free(timedie);
-		return (NULL);
-	}
-	timedie->timedie = get_current_time_ms() + ms;
-	return (timedie);
-}

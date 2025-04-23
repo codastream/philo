@@ -21,13 +21,6 @@ bool	think(t_phi *phi)
 	return (true);
 }
 
-// bool	try_take_forks(t_phi *phi)
-// {
-// 	if (!get_ongoing(phi))
-// 		return (false);
-// 		return (true);
-// 	}
-
 bool	eat(t_phi *phi)
 {
 	if (!get_ongoing(phi))
@@ -42,9 +35,7 @@ bool	eat(t_phi *phi)
 		return (false);
 	set_nb_meal_plus(phi->nb_meals);
 	update_last_meal(phi);
-	save_time(phi->now);
-	extend_time_to_die(phi->timedie, phi);
-	ft_sleep(phi->time_to_eat, phi);
+	usleep(phi->time_to_eat * 1000);
 	pthread_mutex_unlock(phi->fork2);
 	pthread_mutex_unlock(phi->fork1);
 	return (true);
@@ -57,7 +48,6 @@ bool	gosleep(t_phi *phi)
 	if (!print_activity(phi, MSG_SLEEP))
 		return (false);
 	usleep(phi->time_to_sleep * 1000);
-	// ft_sleep(phi->time_to_sleep, phi);
 	return (true);
 }
 

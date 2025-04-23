@@ -46,7 +46,7 @@ bool	is_alive(t_data *data, t_phi *phi)
 	if (elapsed > phi->time_to_die)
 	{
 		set_death(phi->alive);
-		usleep(1);
+		usleep(100);
 		print_death(data, phi, MSG_DIED);
 		return (false);
 	}
@@ -101,7 +101,7 @@ void	*monitor(void *dat)
 			i++;
 		else
 			i = 0;
-		usleep(100);
+		usleep(150);
 	}
 	return (NULL);
 }
