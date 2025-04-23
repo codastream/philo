@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:03:34 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/22 19:50:48 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/22 23:16:09 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@ char	*append_time_and_index(char *dest, char *mschar, int index, \
 		char *indexchar)
 {
 	dest = ft_strcpy(dest, P_PINK, ft_strlen(P_PINK));
-	dest = ft_strcpy(dest, "[", 1);
 	dest = ft_strcpy(dest, mschar, ft_strlen(mschar));
-	dest = ft_strcpy(dest, "] ", 2);
+	dest = ft_strcpy(dest, " ", 1);
 	dest = ft_strcpy(dest, get_color(index), ft_strlen(get_color(index)));
-	dest = ft_strcpy(dest, "[", 1);
 	dest = ft_strcpy(dest, indexchar, ft_strlen(indexchar));
-	dest = ft_strcpy(dest, "] ", 2);
+	dest = ft_strcpy(dest, " ", 1);
 	dest = ft_strcpy(dest, P_NOC, ft_strlen(P_NOC));
 	return (dest);
 }
@@ -39,9 +37,9 @@ char	*init_buffer(int ms, int index, char *msg)
 	indexchar = ft_itoa(index);
 	if (!mschar || !indexchar)
 		return (NULL);
-	size = ft_strlen(P_PINK) + 1 + ft_strlen(mschar) + 2 \
+	size = ft_strlen(P_PINK) + 1 + ft_strlen(mschar) \
 		+ ft_strlen(get_color(index)) + 1 + ft_strlen(indexchar) \
-		+ 2 + ft_strlen(P_NOC) + ft_strlen(msg) + 1;
+		+ ft_strlen(P_NOC) + ft_strlen(msg) + 1;
 	buffer = malloc(size * sizeof(char));
 	if (!buffer)
 		return (NULL);

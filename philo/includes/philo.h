@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/22 21:32:41 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/22 23:44:45 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void		set_nb_meal_plus(t_nb_meals *meals);
 void		update_last_meal(t_phi *phi);
 
 // death
-void		extend_time_to_die(t_die *die, int ms);
+void		extend_time_to_die(t_die *die, t_phi *phi);
 int			get_timedie(t_die *die);
 void		set_death(t_alive *alive);
 
@@ -191,8 +191,11 @@ int			get_elapsed_time_ms(t_time *start, t_time *to);
 int			get_elapsed_meal_ms(int last_meal, t_time *now);
 char		*get_color(int i);
 int			get_time_ms(t_time *time);
+long long	get_time_us(t_time *time);
 void		move_time(t_time *time, int ms);
 int			get_current_time_ms(void);
+int			get_now(t_time *time);
+long long	get_current_time_us(void);
 void		ft_sleep(int ms, t_phi *phi);
 
 // routines

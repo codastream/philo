@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:26:36 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/19 14:18:46 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/22 23:45:09 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,11 @@ void	move_time(t_time *time, int ms)
 	usec = ms * 1000;
 	time->tv_sec += sec;
 	time->tv_usec += usec;
+}
+
+long long	get_time_us(t_time *time)
+{
+	return (time->tv_sec * 1000000 + time->tv_usec);
 }
 
 int	get_time_ms(t_time *time)

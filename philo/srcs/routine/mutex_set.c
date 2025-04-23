@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:25:29 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/22 21:32:28 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/22 23:18:20 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,6 @@ void	update_last_meal(t_phi *phi)
 {
 	pthread_mutex_lock(&phi->last_meal->last_meal_m);
 	save_time(phi->now);
-	phi->last_meal->last_meal = get_time_ms(phi->now);
+	phi->last_meal->last_meal = get_current_time_ms();
 	pthread_mutex_unlock(&phi->last_meal->last_meal_m);
 }

@@ -12,10 +12,10 @@
 
 #include "../includes/philo.h"
 
-void	extend_time_to_die(t_die *die, int ms)
+void	extend_time_to_die(t_die *die, t_phi *phi)
 {
 	pthread_mutex_lock(&die->timedie_m);
-	die->timedie += ms;
+	die->timedie = get_now(phi->now) + phi->time_to_eat;
 	pthread_mutex_unlock(&die->timedie_m);
 }
 

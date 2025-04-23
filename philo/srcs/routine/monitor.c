@@ -101,7 +101,7 @@ void	*monitor(void *dat)
 			i++;
 		else
 			i = 0;
-		usleep(10);
+		usleep(100);
 	}
 	return (NULL);
 }

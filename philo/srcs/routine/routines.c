@@ -17,7 +17,7 @@ void	solo(t_phi *phi)
 	pthread_mutex_lock(phi->forks[0]);
 	if (!print_activity(phi, MSG_FORK))
 		return ;
-	ft_sleep(-1, phi);
+	ft_sleep(phi->time_to_die, phi);
 }
 
 void	many(t_phi *phi)
@@ -27,13 +27,13 @@ void	many(t_phi *phi)
 	is_ongoing = true;
 	while (is_ongoing)
 	{
-		if (!try_take_forks(phi))
+		// if (!try_take_forks(phi))
+		// 	break ;
+		if (!think(phi))
 			break ;
 		if (!eat(phi))
 			break ;
 		if (!gosleep(phi))
-			break ;
-		if (!think(phi))
 			break ;
 		is_ongoing = get_ongoing(phi);
 	}
@@ -68,9 +68,6 @@ void	*routine(void *philo)
 		solo(phi);
 		return (NULL);
 	}
-	dispatch_forks(phi);
-	// if (phi->index % 2 != 0)
-	// 	usleep((phi->time_to_eat - 1) * 1000);
 	many(phi);
 	return (NULL);
 }
@@ -87,6 +84,7 @@ void	live_love_pray(t_data *data)
 	{
 		philo = data->philosophers[i];
 		philo->start = data->start;
+		dispatch_forks(philo);
 		save_time(philo->now);
 		philo->last_meal = init_last_meal(philo);
 		pthread_create(&thread, NULL, routine, philo);
