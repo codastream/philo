@@ -37,31 +37,33 @@ void	many(t_phi *phi)
 	}
 }
 
-void	dispatch_forks(t_phi *phi, int i, int  j)
+t_mutex	*get_fork(t_phi *phi, bool is_first)
 {
+	int		nb_meals;
+	int		index;
+	bool	even_meal;
+	bool	even_i;
+	bool	even_phi;
 
-	int	first;
-	int	second;
-
-	first = i;
-	second = j;
-	if (first % 2 != 0)
+	index = phi->index;
+	nb_meals = get_nb_meal(phi);
+	even_phi = phi->nb_philo % 2 == 0;
+	even_meal = nb_meals % 2 == 0;
+	even_i = phi->index % 2 == 0;
+	if (is_first)
 	{
-		first = j;
-		second = i;
+		if (even_i && index + 1 == phi->nb_philo)
+			return (phi->forks[index]);
+		else
+			return (phi->forks[(index + 1) % phi->nb_philo]);
 	}
-	if (phi->nb_philo % 2 != 1 && phi->nb_philo == phi->index + 1)
+	else
 	{
-		first = phi->index - 1;
-		second = phi->index;
+		if (even_i && index + 1 == phi->nb_philo)
+			return (phi->forks[(index + 1) % phi->nb_philo]);
+		else
+			return (phi->forks[index]);
 	}
-	else if (phi->nb_philo % 2 != 1 && phi->index == 0)
-	{
-		first = phi->index + 1;
-		second = phi->index;
-	}
-	phi->fork1 = phi->forks[first];
-	phi->fork2 = phi->forks[second];
 }
 
 void	*routine(void *philo)
@@ -75,6 +77,7 @@ void	*routine(void *philo)
 		return (NULL);
 	}
 	many(phi);
+	printf("after many for phi %d\n", phi->index);
 	return (NULL);
 }
 
@@ -91,6 +94,7 @@ void	live_love_pray(t_data *data)
 		phi = data->philosophers[i];
 		phi->start = data->start;
 		save_time(phi->now);
+		phi->time_death = get_time_ms(phi->now) + phi->time_to_die;
 		phi->last_meal = init_last_meal(phi);
 		pthread_create(&thread, NULL, routine, phi);
 		data->threads[i++] = thread;

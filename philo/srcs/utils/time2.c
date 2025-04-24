@@ -36,3 +36,20 @@ int	get_now(t_time *time)
 	ms = get_time_ms(time);
 	return (ms);
 }
+
+void	ft_sleep(t_phi *phi, int ms)
+{
+	int	spent;
+	t_time	start;
+
+	if (gettimeofday(&start, NULL) == -1)
+		return ;
+	spent = 0;
+	while (get_elapsed_time_ms(&start, phi->now) < ms)
+	{
+		if (phi->time_death <= get_current_time_ms())
+			break ;
+		save_time(phi->now);
+		usleep(150);
+	}
+}

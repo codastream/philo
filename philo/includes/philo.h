@@ -77,6 +77,7 @@ typedef struct s_phi
 {
 	pthread_t		thread_id;
 	int				index;
+	int				time_death;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
@@ -173,7 +174,7 @@ int			get_elapsed_meal_ms(int last_meal, t_time *now);
 int			get_time_ms(t_time *time);
 int			get_current_time_ms(void);
 int			get_now(t_time *time);
-void		ft_sleep(int ms, t_phi *phi);
+void		ft_sleep(t_phi *phi, int ms);
 
 // routines
 char		*append_time_and_index(char *dest, char *mschar, int index, \
@@ -181,7 +182,7 @@ char		*append_time_and_index(char *dest, char *mschar, int index, \
 char		*init_buffer(int ms, int index, char *msg);
 void		live_love_pray(t_data *data);
 bool		get_ongoing(t_phi *phi);
-void		dispatch_forks(t_phi *phi, int first, int second);
+t_mutex		*get_fork(t_phi *phi, bool is_first);
 
 // print
 char		*get_color(int i);
