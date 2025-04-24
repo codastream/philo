@@ -18,6 +18,7 @@ void	solo(t_phi *phi)
 	if (!print_activity(phi, MSG_FORK))
 		return ;
 	usleep(phi->time_to_die * 1000);
+	pthread_mutex_unlock(phi->forks[0]);
 }
 
 void	many(t_phi *phi)
