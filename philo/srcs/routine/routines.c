@@ -25,13 +25,6 @@ void	many(t_phi *phi)
 	bool	is_ongoing;
 
 	is_ongoing = true;
-	if (phi->index % 2 != 0 \
-		|| (phi->nb_philo % 2 != 0 && phi->index == phi->nb_philo - 1))
-	{
-		if (!think(phi))
-			return ;
-		usleep(phi->time_to_eat * 1000);
-	}
 	while (is_ongoing)
 	{
 		if (!eat(phi))
@@ -44,23 +37,31 @@ void	many(t_phi *phi)
 	}
 }
 
-void	dispatch_forks(t_phi *phi)
+void	dispatch_forks(t_phi *phi, int i, int  j)
 {
-	if (phi->index % 2 != 0)
+
+	int	first;
+	int	second;
+
+	first = i;
+	second = j;
+	if (first % 2 != 0)
 	{
-		phi->fork1 = phi->forks[phi->index];
-		phi->fork2 = phi->forks[phi->index + 1];
+		first = j;
+		second = i;
 	}
-	else
+	if (phi->nb_philo % 2 != 1 && phi->nb_philo == phi->index + 1)
 	{
-		phi->fork1 = phi->forks[phi->index + 1];
-		phi->fork2 = phi->forks[phi->index];
+		first = phi->index - 1;
+		second = phi->index;
 	}
-	if (phi->nb_philo == phi->index + 1)
+	else if (phi->nb_philo % 2 != 1 && phi->index == 0)
 	{
-		phi->fork1 = phi->forks[phi->index];
-		phi->fork2 = phi->forks[0];
+		first = phi->index + 1;
+		second = phi->index;
 	}
+	phi->fork1 = phi->forks[first];
+	phi->fork2 = phi->forks[second];
 }
 
 void	*routine(void *philo)
@@ -89,7 +90,6 @@ void	live_love_pray(t_data *data)
 	{
 		phi = data->philosophers[i];
 		phi->start = data->start;
-		dispatch_forks(phi);
 		save_time(phi->now);
 		phi->last_meal = init_last_meal(phi);
 		pthread_create(&thread, NULL, routine, phi);

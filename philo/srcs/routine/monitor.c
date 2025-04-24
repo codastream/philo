@@ -83,7 +83,6 @@ bool	check_ongoing(t_data *data)
 void	*monitor(void *dat)
 {
 	t_data	*data;
-	t_phi	*phi;
 	int		i;
 	bool	is_ongoing;
 
@@ -94,7 +93,6 @@ void	*monitor(void *dat)
 		printf("in monitor\n");
 	while (is_ongoing)
 	{
-		phi = data->philosophers[i];
 		is_ongoing = check_ongoing(data);
 		set_is_ongoing(data->ongoing, is_ongoing);
 		if (i < data->nb_philo - 1)

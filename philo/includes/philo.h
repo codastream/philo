@@ -181,6 +181,7 @@ char		*append_time_and_index(char *dest, char *mschar, int index, \
 char		*init_buffer(int ms, int index, char *msg);
 void		live_love_pray(t_data *data);
 bool		get_ongoing(t_phi *phi);
+void		dispatch_forks(t_phi *phi, int first, int second);
 
 // print
 char		*get_color(int i);

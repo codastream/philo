@@ -23,6 +23,13 @@ bool	think(t_phi *phi)
 
 bool	eat(t_phi *phi)
 {
+	int	nb_meals;
+
+	nb_meals = get_nb_meal(phi);
+	if (nb_meals % 2 == 0)
+		dispatch_forks(phi, phi->index, phi->index + 1);
+	else
+		dispatch_forks(phi, phi->index + 1, phi->index);
 	if (!get_ongoing(phi))
 		return (false);
 	pthread_mutex_lock(phi->fork1);
@@ -36,15 +43,15 @@ bool	eat(t_phi *phi)
 	set_nb_meal_plus(phi->nb_meals);
 	update_last_meal(phi);
 	usleep(phi->time_to_eat * 1000);
-	pthread_mutex_unlock(phi->fork2);
-	pthread_mutex_unlock(phi->fork1);
 	return (true);
 }
 
 bool	gosleep(t_phi *phi)
 {
 	if (!get_ongoing(phi))
-		return (false);
+	return (false);
+	pthread_mutex_unlock(phi->fork2);
+	pthread_mutex_unlock(phi->fork1);
 	if (!print_activity(phi, MSG_SLEEP))
 		return (false);
 	usleep(phi->time_to_sleep * 1000);
