@@ -52,16 +52,20 @@ t_mutex	*get_fork(t_phi *phi, bool is_first)
 	even_i = phi->index % 2 == 0;
 	if (is_first)
 	{
-		if (even_i || index + 1 == phi->nb_philo)
-			return (phi->forks[index]);
+		if (even_i)
+			return (phi->forks[(index + 1) % phi->nb_philo]);
 		else
+			return (phi->forks[index]);
+		if (!even_phi && index + 1 == phi->nb_philo)
 			return (phi->forks[(index + 1) % phi->nb_philo]);
 	}
 	else
 	{
-		if (even_i || index + 1 == phi->nb_philo)
-			return (phi->forks[(index + 1) % phi->nb_philo]);
+		if (even_i)
+			return (phi->forks[index]);
 		else
+			return (phi->forks[(index + 1) % phi->nb_philo]);
+		if (!even_phi && index + 1 == phi->nb_philo)
 			return (phi->forks[index]);
 	}
 }
