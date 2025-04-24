@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "philo.h"
 
 int	get_current_time_ms(void)
 {
@@ -29,6 +29,7 @@ int	get_now(t_time *time)
 {
 	int		ms;
 
+	save_time(time);
 	if (gettimeofday(time, NULL) == -1)
 	{
 		return (0);
@@ -39,17 +40,17 @@ int	get_now(t_time *time)
 
 void	ft_sleep(t_phi *phi, int ms)
 {
-	int	spent;
-	t_time	start;
+	long	spent;
 
-	if (gettimeofday(&start, NULL) == -1)
-		return ;
 	spent = 0;
-	while (get_elapsed_time_ms(&start, phi->now) < ms)
+	while (spent < ms * 1000)
 	{
 		if (phi->time_death <= get_current_time_ms())
+		{
 			break ;
+		}
 		save_time(phi->now);
+		spent += 150;
 		usleep(150);
 	}
 }
