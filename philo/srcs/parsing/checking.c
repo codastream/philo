@@ -31,6 +31,8 @@ bool	is_pos_atoi_string(char *s)
 		s++;
 		num_size++;
 	}
+	if (*s)
+		return (false);
 	if (num_size > 10)
 		return (false);
 	ln = ft_atol(l);

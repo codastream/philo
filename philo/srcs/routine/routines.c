@@ -37,39 +37,6 @@ void	many(t_phi *phi)
 	}
 }
 
-t_mutex	*get_fork(t_phi *phi, bool is_first)
-{
-	int		nb_meals;
-	int		index;
-	bool	even_meal;
-	bool	even_i;
-	bool	even_phi;
-
-	index = phi->index;
-	nb_meals = get_nb_meal(phi);
-	even_phi = phi->nb_philo % 2 == 0;
-	even_meal = nb_meals % 2 == 0;
-	even_i = phi->index % 2 == 0;
-	if (is_first)
-	{
-		if (even_i)
-			return (phi->forks[(index + 1) % phi->nb_philo]);
-		else
-			return (phi->forks[index]);
-		if (!even_phi && index + 1 == phi->nb_philo)
-			return (phi->forks[(index + 1) % phi->nb_philo]);
-	}
-	else
-	{
-		if (even_i)
-			return (phi->forks[index]);
-		else
-			return (phi->forks[(index + 1) % phi->nb_philo]);
-		if (!even_phi && index + 1 == phi->nb_philo)
-			return (phi->forks[index]);
-	}
-}
-
 void	*routine(void *philo)
 {
 	t_phi	*phi;

@@ -6,7 +6,7 @@
 /*   By: fpetit <fpetit@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:43:55 by fpetit            #+#    #+#             */
-/*   Updated: 2025/04/22 23:44:45 by fpetit           ###   ########.fr       */
+/*   Updated: 2025/04/24 23:02:45 by fpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,8 @@ char		*append_time_and_index(char *dest, char *mschar, int index, \
 char		*init_buffer(int ms, int index, char *msg);
 void		live_love_pray(t_data *data);
 bool		get_ongoing(t_phi *phi);
+
+// forks
 t_mutex		*get_fork(t_phi *phi, bool is_first);
 
 // print

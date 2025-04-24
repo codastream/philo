@@ -69,6 +69,7 @@ SRCS_FILES:=	main.c\
 				routine/routines.c\
 				routine/activity.c\
 				routine/death.c\
+				routine/forks.c\
 				routine/monitor.c\
 				routine/mutex_get.c\
 				routine/mutex_set.c\
