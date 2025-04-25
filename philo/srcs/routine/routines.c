@@ -28,11 +28,11 @@ void	many(t_phi *phi)
 	is_ongoing = true;
 	while (is_ongoing)
 	{
+		if (!think(phi))
+			break ;
 		if (!eat(phi))
 			break ;
 		if (!gosleep(phi))
-			break ;
-		if (!think(phi))
 			break ;
 		is_ongoing = get_ongoing(phi);
 	}
